@@ -41,3 +41,7 @@ Estimativa simplificada: 100 W/m² ajustados de forma grosseira ao isolamento e 
 - Checklist imprimível e PDF autónomo em /recursos/checklist-orcamento/checklist-orcamento.pdf; modelo de email e pesquisa local de artigos.
 - Novo percurso do utilizador na homepage, links cruzados e sitemap local atualizado.
 - Informação técnica baseada em DECO, APA, DGEG e texto legislativo europeu, sem alegar certificação profissional.
+
+## Traduções (outubro 2026)
+O website tem três versões estáticas: português (original), russo em `/ru/` e ucraniano em `/uk/`. A navegação mantém a mesma página temática em cada idioma. O ficheiro `locale.css` apresenta o seletor PT/RU/UK. A script `localized.js` implementa calculadora, pesquisa, cópia do modelo e menu nos idiomas traduzidos. O sitemap inclui URLs alternativos com hreflang para as 14 páginas de cada idioma.
+Os guias são adaptações editoriais em russo e ucraniano, mantendo notas de limitação do cálculo. Os PDFs atualmente disponíveis para download estão em português (PT); versões traduzidas da checklist podem ser impressas ou guardadas em PDF diretamente pelo navegador.
