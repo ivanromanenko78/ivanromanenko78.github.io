@@ -33,3 +33,11 @@ Estimativa simplificada: 100 W/m² ajustados de forma grosseira ao isolamento e 
 - Fotografias exibidas a partir do CDN Pexels, sob [licença Pexels](https://www.pexels.com/license/): IDs 6588599, 7614543, 20078063, 7587368, 6316065. Antes da venda, é preferível descarregar, otimizar e alojar os ficheiros localmente; conservar documentação de licença e autoria.
 - O simulador de temperatura é ilustrativo e não controla nenhum equipamento.
 - Não inclui avaliações de clientes, certificações, equipas ou serviços fictícios.
+
+## Melhoria de conteúdo, outubro 2026
+- 4 novos guias: comparação Split/Multi-split/VRF, dimensionamento, erros de instalação e manutenção.
+- Conteúdo de referência e transparência editorial em /autoria-e-fontes/.
+- Calculadora de potência heurística com volume, isolamento, insolação, ocupação, piso e uso da divisão; resultados são intervalo didático, não projeto de AVAC.
+- Checklist imprimível e PDF autónomo em /recursos/checklist-orcamento/checklist-orcamento.pdf; modelo de email e pesquisa local de artigos.
+- Novo percurso do utilizador na homepage, links cruzados e sitemap local atualizado.
+- Informação técnica baseada em DECO, APA, DGEG e texto legislativo europeu, sem alegar certificação profissional.
