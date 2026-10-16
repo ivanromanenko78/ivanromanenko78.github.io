@@ -26,3 +26,10 @@ A marca editorial temporária é "Clima Guia". Antes de transformar o projeto nu
 
 ## Calculadora
 Estimativa simplificada: 100 W/m² ajustados de forma grosseira ao isolamento e à exposição solar; convertidos para BTU/h e aproximados à capacidade comercial seguinte. Não representa um projeto técnico e não substitui o dimensionamento por profissional qualificado.
+
+## Redesign visual (outubro de 2026)
+- Página inicial renovada com sistema visual premium em `premium.css`, `premium.js` e `index.html`.
+- Referências de design/código: [ZEPHYR](https://github.com/uiuxlabz/ac-repair-html-template) e [Astro Landing Page](https://github.com/mhyfritz/astro-landing-page), ambos MIT. O código desta integração foi implementado especificamente para Clima Guia, sem copiar componentes completos.
+- Fotografias exibidas a partir do CDN Pexels, sob [licença Pexels](https://www.pexels.com/license/): IDs 6588599, 7614543, 20078063, 7587368, 6316065. Antes da venda, é preferível descarregar, otimizar e alojar os ficheiros localmente; conservar documentação de licença e autoria.
+- O simulador de temperatura é ilustrativo e não controla nenhum equipamento.
+- Não inclui avaliações de clientes, certificações, equipas ou serviços fictícios.
