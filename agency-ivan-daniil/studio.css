@@ -111,3 +111,5 @@
 html[lang=ru] #home-featured-title-wrapper{font-size:6.5vw}
 html[lang=ru] .fallback-wordmark{font-size:8.7vw;letter-spacing:-.055em}
 @media(max-width:812px){.language-switch{top:15px;font-size:10px}.language-switch a{padding:10px 7px}html[lang=ru] #home-featured-title-wrapper{font-size:12vw}html[lang=ru] .fallback-wordmark{font-size:13vw}html[lang=ru] .no-webgl #home-hero-title{font-size:7vw}}
+
+html[lang=ru] #ui,html[lang=ru] #ui *{font-family:Arial,Helvetica,sans-serif}

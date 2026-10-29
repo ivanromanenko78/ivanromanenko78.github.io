@@ -10,6 +10,7 @@ preview.addEventListener('click',e=>{if(e.target===preview)closePreview();});
 const wa='https://wa.me/351967901942';
 // Capture prototype navigation before the reference engine attempts remote routes.
 document.addEventListener('click',e=>{
+ if(e.target.closest('.language-switch a')){e.stopImmediatePropagation();return;}
  const demo=e.target.closest('[data-studio-preview],#home-reel-video-watch-btn');
  if(demo){e.preventDefault();e.stopImmediatePropagation();openPreview();return;}
  const link=e.target.closest('[data-studio-target]');
