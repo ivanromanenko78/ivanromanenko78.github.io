@@ -1,5 +1,7 @@
 const STUDIO_BASE=new URL('.',import.meta.url);window.__STUDIO_BASE__=STUDIO_BASE.pathname;
 const language=document.documentElement.dataset.lang||'pt';
+const heroWords={"ru": "ВАШ БИЗНЕС.<br>В КАДРЕ.", "en": "YOUR BUSINESS.<br>IN THE FRAME.", "pt": "O SEU NEGÓCIO.<br>EM IMAGEM."};
+
 const $=s=>document.querySelector(s);
 const preview=$('#studio-preview'),video=$('#studio-preview-video');
 function openPreview(){preview.showModal();video.play().catch(()=>{});}
@@ -22,7 +24,8 @@ document.querySelectorAll('[data-studio-contact]').forEach(form=>form.addEventLi
 let webgl=false;try{const c=document.createElement('canvas');webgl=!!(c.getContext('webgl2')||c.getContext('webgl'));}catch{}
 function fallback(){
  document.documentElement.classList.add('no-webgl');
- const hero=$('#home-hero-visual-container');hero.innerHTML=`<video class="fallback-hero-video" autoplay muted playsinline loop preload="auto" src="./assets/textures/reel/desktop.mp4"></video><div class="fallback-wordmark">${language==='ru'?'ИДЕИ В<br>ДВИЖЕНИИ.':language==='pt'?'IDEIAS EM<br>MOVIMENTO.':'IDEAS IN<br>MOTION.'}</div><span class="fallback-cross">+</span><span class="fallback-cross">+</span><span class="fallback-cross">+</span><span class="fallback-cross">+</span>`;
+ const hero=$('#home-hero-visual-container'),heroActions=$('#hero-actions');hero.innerHTML=`<video class="fallback-hero-video" autoplay muted playsinline loop preload="auto" src="./assets/textures/reel/desktop.mp4"></video><div class="fallback-wordmark">${heroWords[language]||heroWords.pt}</div><span class="fallback-cross">+</span><span class="fallback-cross">+</span><span class="fallback-cross">+</span><span class="fallback-cross">+</span>`;
+ if(heroActions)hero.append(heroActions);
  const reel=document.createElement('video');reel.className='fallback-reel';reel.src=new URL('assets/textures/reel/desktop.mp4',STUDIO_BASE).href;reel.autoplay=true;reel.loop=true;reel.muted=true;reel.playsInline=true;$('#home-reel-video-container').prepend(reel);
  document.querySelectorAll('.project-item').forEach(item=>{item.querySelector('.project-item-image').style.backgroundImage=`url('${new URL('assets/projects/'+item.dataset.id+'/home.webp',STUDIO_BASE).href}')`;});
  $('#header-right-menu-btn').addEventListener('click',()=>{const open=document.documentElement.classList.toggle('menu-open');$('#header-right-menu-btn').setAttribute('aria-expanded',String(open));});

@@ -18,8 +18,12 @@ No build or dependency installation is required. Site serves `dist/`.
 
 JavaScript syntax checked; browser verified desktop fallback, navigation, video dialog and 390px responsive viewport with no horizontal overflow. The QA browser has WebGL disabled, so the full 3D scene cannot be visually verified in this environment. Browsers with WebGL receive the original scene engine; browsers without it receive a responsive video fallback.
 
-Next content pass: final brand name, own reel, own project images, final public contacts and package terms. Do not remove temporary-media attribution until those media have been replaced.
+The offer, inclusions, four client stages, two team profiles, audience and contact actions are implemented in PT / EN / RU. Remaining inputs: final brand name, own reel, own project images, and final payment / IVA / scope terms. Do not remove temporary-media attribution until those media have been replaced.
 
 ## Languages and GitHub Pages
 
 PT: index.html; EN: en.html; RU: ru.html. Navigation preserves the project subdirectory. Resources are local and shared by all languages. Upload the complete dist directory contents to agency-ivan-daniil/ in ivanromanenko78.github.io. The engine directory avoids Jekyll underscore exclusions. No build is required.
+
+## Agency content pass
+
+The first screen presents the €400 monthly content offer for small businesses in Lisbon. The package sits directly below it; the client workflow and team bios follow the reel. Four explicitly marked Lusion visual references remain temporary. Terms are confirmed in a proposal before work begins. No testimonials or sales outcomes have been invented. Existing GitHub route fixes are retained; root-specific HTML base tags were removed so the same files work on both hosts.
