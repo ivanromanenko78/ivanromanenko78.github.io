@@ -114,11 +114,11 @@
     "contactTitle": "Fale com o estúdio",
     "call": "Ligar ao Ivan",
     "name": "O seu nome",
-    "business": "Negócio / marca",
+    "business": "O seu negócio",
     "service": "O que procura?",
-    "brief": "Conte-nos a ideia",
+    "brief": "Conte-nos a ideia / o projeto",
     "prepare": "Preparar mensagem",
-    "formNote": "O WhatsApp abre com a sua mensagem pronta. Confirme o envio na aplicação.",
+    "formNote": "Escreva-nos — conversamos sobre o formato e o âmbito. O WhatsApp abre com a mensagem pronta; confirme o envio na aplicação.",
     "ready": "Mensagem pronta",
     "send": "Enviar por WhatsApp",
     "copy": "Copiar texto",
@@ -390,7 +390,11 @@
           ]
         ]
       }
-    ]
+    ],
+    "businessLabel": "O seu negócio (opcional)",
+    "namePlaceholder": "Como se chama?",
+    "businessPlaceholder": "Por exemplo: café, estúdio de ioga, marca de roupa",
+    "briefPlaceholder": "O que gostaria de filmar e para quando? Pode ser breve."
   },
   "en": {
     "lang": "en",
@@ -507,11 +511,11 @@
     "contactTitle": "Talk to the studio",
     "call": "Call Ivan",
     "name": "Your name",
-    "business": "Business / brand",
+    "business": "Your business",
     "service": "What do you need?",
-    "brief": "Tell us your idea",
+    "brief": "Tell us about your idea / project",
     "prepare": "Prepare message",
-    "formNote": "WhatsApp opens with your message ready. Confirm sending in the app.",
+    "formNote": "Tell us about your project — we’ll discuss the format and scope. WhatsApp opens with your message ready; confirm sending in the app.",
     "ready": "Message ready",
     "send": "Send via WhatsApp",
     "copy": "Copy text",
@@ -783,7 +787,11 @@
           ]
         ]
       }
-    ]
+    ],
+    "businessLabel": "Your business (optional)",
+    "namePlaceholder": "What should we call you?",
+    "businessPlaceholder": "For example: a café, yoga studio or clothing brand",
+    "briefPlaceholder": "What would you like to film, and by when? A few words are enough."
   },
   "ru": {
     "lang": "ru",
@@ -900,11 +908,11 @@
     "contactTitle": "Связаться со студией",
     "call": "Позвонить Ивану",
     "name": "Ваше имя",
-    "business": "Бизнес / бренд",
+    "business": "Ваш бизнес",
     "service": "Что вам нужно?",
-    "brief": "Расскажите об идее",
+    "brief": "Расскажите об идее / задаче",
     "prepare": "Подготовить сообщение",
-    "formNote": "WhatsApp откроется с готовым текстом. Подтвердите отправку в приложении.",
+    "formNote": "Напишите нам — обсудим формат и объём. WhatsApp откроется с готовым текстом; подтвердите отправку в приложении.",
     "ready": "Сообщение готово",
     "send": "Отправить в WhatsApp",
     "copy": "Скопировать текст",
@@ -1176,6 +1184,10 @@
           ]
         ]
       }
-    ]
+    ],
+    "businessLabel": "Ваш бизнес (необязательно)",
+    "namePlaceholder": "Как к вам обращаться?",
+    "businessPlaceholder": "Например: кафе, студия йоги, бренд одежды",
+    "briefPlaceholder": "Что хотите снять и к какому сроку? Можно коротко."
   }
 }

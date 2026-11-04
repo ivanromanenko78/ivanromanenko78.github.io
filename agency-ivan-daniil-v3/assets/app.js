@@ -21,6 +21,8 @@ if(form){
  const service=Object.hasOwn(locale.serviceNames,choice)?locale.serviceNames[choice]:null;
  form.addEventListener('submit',()=>{
   const fields=[[locale.name,document.getElementById('brief-name').value.trim()]];
+  const business=document.getElementById('brief-business').value.trim();
+  if(business)fields.push([locale.business,business]);
   if(service)fields.push([locale.service,service]);
   fields.push([locale.brief,document.getElementById('brief-task').value.trim()]);
   form.elements.text.value=locale.message+'\n\n'+fields.map(([label,value])=>label+': '+value).join('\n');

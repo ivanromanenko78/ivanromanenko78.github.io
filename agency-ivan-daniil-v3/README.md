@@ -28,7 +28,7 @@ Optimisation: H.264 MP4, CRF 28, no audio, 24 fps, fast-start metadata; coffee t
 
 ## Contact and privacy
 
-The contact form asks only for name and task, then opens WhatsApp directly on submit with a prepared message. Valid service context is retained from landing-page links without adding another form field. The visitor confirms sending in WhatsApp; the website does not claim delivery. It has no backend storage. No trackers or advertising pixels. Hosting access logs and WhatsApp are covered by their respective providers.
+The contact form asks for required name and task plus an optional business field, then opens WhatsApp directly on submit with a prepared message. Valid service context is retained from landing-page links without adding another form field. The visitor confirms sending in WhatsApp; the website does not claim delivery. It has no backend storage. No trackers or advertising pixels. Hosting access logs and WhatsApp are covered by their respective providers.
 
 ## Validation
 
@@ -36,9 +36,11 @@ All 33 pages checked for internal asset links, fragment links, unique page title
 
 ## Contact and interaction update
 
-- Two-field contact form in PT/EN/RU, native required-field validation, immediate WhatsApp handoff, no extra review step.
+- Short contact form in PT/EN/RU, native required-field validation, immediate WhatsApp handoff, no extra review step.
 - Open Graph locale and image dimensions/type/alt, complete Twitter preview metadata, ContactPage and blog CollectionPage types.
 - Button arrows, pressed states, article links, FAQ and form focus interactions. Reduced-motion preferences disable animation.
 - Existing real publication dates retained; no invented testimonials or case studies.
 
 Validation for this update: 12 contact-message checks across all three languages, including valid and invalid service contexts; all 33 pages checked for links, language alternates, JSON-LD and social metadata. Asset URLs use content hashes to avoid stale CSS/JavaScript after deployment.
+
+Optional business context update: added a clearly optional business field and descriptive name/task placeholders in PT/EN/RU. Filled business context is included in the WhatsApp message; empty business values are omitted. No response-time promises were added.

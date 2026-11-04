@@ -89,7 +89,7 @@ def service_page(lang,key,cur):
 
 def contact(lang,cur):
  d=DATA[lang]
- return f'''<section class="section wrap contact-layout"><div><p class="eyebrow">I+D / CONTACT</p><h1>{d['contactH']}</h1><p class="lead">{d['contactLead']}</p><a class="contact-phone" href="tel:+{PHONE}">+351 967 901 942</a><a class="text-link" href="https://wa.me/{PHONE}">WhatsApp ↗</a><p class="fineprint">Lisboa, Portugal · PT / EN / RU</p></div><div class="form-panel"><form id="brief-form" action="https://wa.me/{PHONE}" method="get"><label for="brief-name">{d['name']}</label><input id="brief-name" autocomplete="name" maxlength="120" required><label for="brief-task">{d['brief']}</label><textarea id="brief-task" rows="5" maxlength="1800" required></textarea><input type="hidden" name="text" id="whatsapp-text" value="{esc(d['message'])}"><button class="button" type="submit">{d['send']} <span aria-hidden="true">↗</span></button><p class="fineprint">{d['formNote']}</p></form></div></section>'''
+ return f'''<section class="section wrap contact-layout"><div><p class="eyebrow">I+D / CONTACT</p><h1>{d['contactH']}</h1><p class="lead">{d['contactLead']}</p><a class="contact-phone" href="tel:+{PHONE}">+351 967 901 942</a><a class="text-link" href="https://wa.me/{PHONE}">WhatsApp ↗</a><p class="fineprint">Lisboa, Portugal · PT / EN / RU</p></div><div class="form-panel"><form id="brief-form" action="https://wa.me/{PHONE}" method="get"><label for="brief-name">{d['name']}</label><input id="brief-name" autocomplete="name" maxlength="120" placeholder="{esc(d['namePlaceholder'])}" required><label for="brief-business">{d['businessLabel']}</label><input id="brief-business" autocomplete="organization" maxlength="160" placeholder="{esc(d['businessPlaceholder'])}"><label for="brief-task">{d['brief']}</label><textarea id="brief-task" rows="5" maxlength="1800" placeholder="{esc(d['briefPlaceholder'])}" required></textarea><input type="hidden" name="text" id="whatsapp-text" value="{esc(d['message'])}"><button class="button" type="submit">{d['send']} <span aria-hidden="true">↗</span></button><p class="fineprint">{d['formNote']}</p></form></div></section>'''
 
 def article(lang,idx,cur):
  d=DATA[lang]; ar=d['articles'][idx]
@@ -130,7 +130,7 @@ def render(lang,key):
  elif key=='credits':body=credits(lang,cur)
  else:body=article(lang,int(key.split('-')[1]),cur)
  footer=f'''<footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="footer-wordmark" href="{link(lang,'home',cur)}">IVAN<span>+</span>DANIIL</a><p>{d['footerLine']}<br>Lisboa, Portugal</p></div><div class="footer-links">{''.join(f'<a href="{link(lang,k,cur)}">{s["name"]}</a>' for k,s in d['services'].items())}<a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a></div><div class="footer-bottom"><span>© 2026 IVAN & DANIIL</span><a href="tel:+{PHONE}">+351 967 901 942</a><a href="{link(lang,'credits',cur)}">{d['credits']}</a><a href="#main" aria-label="Top">↑</a></div></div></footer>'''
- locale={k:d[k] for k in ['message','name','service','brief','menu','close']}
+ locale={k:d[k] for k in ['message','name','business','service','brief','menu','close']}
  locale['serviceNames']={k:v['name'] for k,v in d['services'].items()}
  result=head+header+'<main id="main">'+body+'</main>'+footer+'<script id="locale" type="application/json">'+json.dumps(locale,ensure_ascii=False)+'</script>'+f'<script defer src="{asset(cur,"app.js")}?v={JS_REV}"></script></body></html>'
  target=ROOT/cur;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(result)
