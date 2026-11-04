@@ -1,9 +1,11 @@
 from pathlib import Path
-import json, html
+import json, html, hashlib
 ROOT=Path(__file__).resolve().parent.parent
 DATA=json.loads((ROOT/'src/content.json').read_text())
 BASE='https://ivanromanenko78.github.io/agency-ivan-daniil-v3/'
 PHONE='351967901942'
+CSS_REV=hashlib.sha256((ROOT/'assets/style.css').read_bytes()).hexdigest()[:10]
+JS_REV=hashlib.sha256((ROOT/'assets/app.js').read_bytes()).hexdigest()[:10]
 esc=lambda s:html.escape(str(s),quote=True)
 
 def path(lang,key):
@@ -86,8 +88,8 @@ def service_page(lang,key,cur):
  return f'''<section class="service-hero wrap"><div><p class="eyebrow">{s['tag']} · LISBOA</p><h1>{s['h']}</h1><p class="lead">{s['lead']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="service-seo-label mono">{s['title']}</p></div><div class="service-visual">{visual}</div></section><section class="section paper"><div class="wrap"><div class="section-heading"><h2>{d['forWho']}</h2><p>{s['intro']}</p></div><ul class="who-grid">{who}</ul></div></section><section class="section"><div class="wrap delivery-layout"><div><p class="eyebrow">I+D / OUTPUT</p><h2>{d['deliver']}</h2><ul class="check-list">{out}</ul></div><aside class="scope-panel"><p class="eyebrow">{d['scope']}</p><h3>{s['price']}</h3><p>{s['priceText']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="fineprint">{d['terms']}</p></aside></div></section>'''+(package(lang,cur) if key=='content' else '')+process(lang,cur)+faq(lang,s['faqs'])+f'<section class="section paper"><div class="wrap"><p class="eyebrow">{d["related"]}</p><div class="related-services">'+''.join(f'<a href="{link(lang,k,cur)}">{ss["name"]} ↗</a>' for k,ss in d['services'].items() if k!=key)+'</div></div></section>'+cta(lang,cur)
 
 def contact(lang,cur):
- d=DATA[lang];options=''.join(f'<option value="{k}">{s["name"]}</option>' for k,s in d['services'].items())
- return f'''<section class="section wrap contact-layout"><div><p class="eyebrow">I+D / CONTACT</p><h1>{d['contactH']}</h1><p class="lead">{d['contactLead']}</p><a class="contact-phone" href="tel:+{PHONE}">+351 967 901 942</a><a class="text-link" href="https://wa.me/{PHONE}">WhatsApp ↗</a><p class="fineprint">Lisboa, Portugal · PT / EN / RU</p></div><div class="form-panel"><form id="brief-form"><label>{d['name']}<input name="name" autocomplete="name" maxlength="120" required></label><label>{d['business']}<input name="business" autocomplete="organization" maxlength="160" required></label><label>{d['service']}<select name="service">{options}</select></label><label>{d['brief']}<textarea name="brief" rows="4" maxlength="1800" required></textarea></label><button class="button" type="submit">{d['prepare']} ↗</button><p class="fineprint">{d['formNote']}</p></form><div id="message-ready" hidden><h2>{d['ready']}</h2><textarea id="prepared-text" rows="7" readonly aria-label="{d['ready']}"></textarea><a id="send-message" class="button" href="https://wa.me/{PHONE}" target="_blank" rel="noopener">{d['send']} ↗</a><button type="button" id="copy-message" class="text-link">{d['copy']}</button><p role="status" id="copy-status"></p></div></div></section>'''
+ d=DATA[lang]
+ return f'''<section class="section wrap contact-layout"><div><p class="eyebrow">I+D / CONTACT</p><h1>{d['contactH']}</h1><p class="lead">{d['contactLead']}</p><a class="contact-phone" href="tel:+{PHONE}">+351 967 901 942</a><a class="text-link" href="https://wa.me/{PHONE}">WhatsApp ↗</a><p class="fineprint">Lisboa, Portugal · PT / EN / RU</p></div><div class="form-panel"><form id="brief-form" action="https://wa.me/{PHONE}" method="get"><label for="brief-name">{d['name']}</label><input id="brief-name" autocomplete="name" maxlength="120" required><label for="brief-task">{d['brief']}</label><textarea id="brief-task" rows="5" maxlength="1800" required></textarea><input type="hidden" name="text" id="whatsapp-text" value="{esc(d['message'])}"><button class="button" type="submit">{d['send']} <span aria-hidden="true">↗</span></button><p class="fineprint">{d['formNote']}</p></form></div></section>'''
 
 def article(lang,idx,cur):
  d=DATA[lang]; ar=d['articles'][idx]
@@ -104,11 +106,16 @@ def render(lang,key):
  title=d['homeTitle'] if key=='home' else d['services'][key]['title'] if key in d['services'] else d['articles'][int(key.split('-')[1])]['title'] if key.startswith('article-') else {'blog':d['nav'][3]+' — '+d['journalH'].replace('<br>',' '),'contact':d['contactTitle'],'credits':d['creditTitle']}[key]
  desc=d['services'][key]['lead'] if key in d['services'] else d['articles'][int(key.split('-')[1])]['excerpt'] if key.startswith('article-') else d['contactLead'] if key=='contact' else d['homeLead']
  canonical=BASE+cur
- head=f'''<!doctype html><html lang="{d['lang']}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{esc(title)} | Ivan &amp; Daniil</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#111411"><link rel="canonical" href="{canonical}"><link rel="icon" href="{asset(cur,'icon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="{asset(cur,'style.css')}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}"><meta property="og:type" content="{'article' if key.startswith('article-') else 'website'}"><meta property="og:url" content="{canonical}"><meta property="og:site_name" content="Ivan &amp; Daniil"><meta property="og:image" content="{BASE}assets/social.jpg"><meta name="twitter:card" content="summary_large_image">'''
- for lng in DATA: head+=f'<link rel="alternate" hreflang="{DATA[lng]["lang"]}" href="{aurl(lng,key)}">'
+ head=f'''<!doctype html><html lang="{d['lang']}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{esc(title)} | Ivan &amp; Daniil</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#111411"><link rel="canonical" href="{canonical}"><link rel="icon" href="{asset(cur,'icon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="{asset(cur,'style.css')}?v={CSS_REV}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}"><meta property="og:type" content="{'article' if key.startswith('article-') else 'website'}"><meta property="og:url" content="{canonical}"><meta property="og:site_name" content="Ivan &amp; Daniil"><meta property="og:image" content="{BASE}assets/social.jpg"><meta name="twitter:card" content="summary_large_image">'''
+ locales={'pt':'pt_PT','en':'en_GB','ru':'ru_RU'}
+ head+=f'<meta property="og:locale" content="{locales[lang]}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{esc(d['homeTitle'])}"><meta name="twitter:title" content="{esc(title)}"><meta name="twitter:description" content="{esc(desc)}"><meta name="twitter:image" content="{BASE}assets/social.jpg"><meta name="twitter:image:alt" content="{esc(d['homeTitle'])}">'
+ for lng in DATA:
+  head+=f'<link rel="alternate" hreflang="{DATA[lng]["lang"]}" href="{aurl(lng,key)}">'
+  if lng!=lang: head+=f'<meta property="og:locale:alternate" content="{locales[lng]}">'
+
  head+=f'<link rel="alternate" hreflang="x-default" href="{aurl("pt",key)}">'
  org={'@type':'Organization','@id':BASE+'#studio','name':'Ivan & Daniil','url':BASE,'telephone':'+351967901942','areaServed':{'@type':'City','name':'Lisboa'}}
- graph=[org,{'@type':'WebPage','@id':canonical+'#page','url':canonical,'name':title,'description':desc,'inLanguage':d['lang'],'isPartOf':{'@id':BASE+'#website'}},{'@type':'WebSite','@id':BASE+'#website','name':'Ivan & Daniil','url':BASE}]
+ graph=[org,{'@type':('ContactPage' if key=='contact' else 'CollectionPage' if key=='blog' else 'WebPage'),'@id':canonical+'#page','url':canonical,'name':title,'description':desc,'inLanguage':d['lang'],'isPartOf':{'@id':BASE+'#website'}},{'@type':'WebSite','@id':BASE+'#website','name':'Ivan & Daniil','url':BASE}]
  if key in d['services']: graph.append({'@type':'Service','name':title,'description':desc,'url':canonical,'provider':{'@id':BASE+'#studio'},'areaServed':{'@type':'City','name':'Lisboa'}})
  if key.startswith('article-'):graph.append({'@type':'BlogPosting','headline':title,'description':desc,'datePublished':'2026-11-04','dateModified':'2026-11-04','author':{'@id':BASE+'#studio'},'publisher':{'@id':BASE+'#studio'},'mainEntityOfPage':canonical,'image':BASE+'assets/social.jpg','inLanguage':d['lang']})
  if key!='home':graph.append({'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':1,'name':'Ivan & Daniil','item':aurl(lang,'home')},{'@type':'ListItem','position':2,'name':title,'item':canonical}]})
@@ -123,8 +130,9 @@ def render(lang,key):
  elif key=='credits':body=credits(lang,cur)
  else:body=article(lang,int(key.split('-')[1]),cur)
  footer=f'''<footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="footer-wordmark" href="{link(lang,'home',cur)}">IVAN<span>+</span>DANIIL</a><p>{d['footerLine']}<br>Lisboa, Portugal</p></div><div class="footer-links">{''.join(f'<a href="{link(lang,k,cur)}">{s["name"]}</a>' for k,s in d['services'].items())}<a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a></div><div class="footer-bottom"><span>© 2026 IVAN & DANIIL</span><a href="tel:+{PHONE}">+351 967 901 942</a><a href="{link(lang,'credits',cur)}">{d['credits']}</a><a href="#main" aria-label="Top">↑</a></div></div></footer>'''
- locale={k:d[k] for k in ['message','name','business','service','brief','copied','copyFail','menu','close']}
- result=head+header+'<main id="main">'+body+'</main>'+footer+'<script id="locale" type="application/json">'+json.dumps(locale,ensure_ascii=False)+'</script>'+f'<script defer src="{asset(cur,"app.js")}"></script></body></html>'
+ locale={k:d[k] for k in ['message','name','service','brief','menu','close']}
+ locale['serviceNames']={k:v['name'] for k,v in d['services'].items()}
+ result=head+header+'<main id="main">'+body+'</main>'+footer+'<script id="locale" type="application/json">'+json.dumps(locale,ensure_ascii=False)+'</script>'+f'<script defer src="{asset(cur,"app.js")}?v={JS_REV}"></script></body></html>'
  target=ROOT/cur;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(result)
  return canonical
 

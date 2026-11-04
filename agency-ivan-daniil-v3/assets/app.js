@@ -16,6 +16,13 @@ if('IntersectionObserver' in window){const io=new IntersectionObserver(entries=>
 document.addEventListener('visibilitychange',()=>videos.forEach(v=>{if(document.hidden)v.pause();else if(v.dataset.visible==='1'&&v.dataset.manual!=='pause'&&!reduce.matches&&!connection?.saveData){loadVideo(v);v.play().catch(()=>{});}}));
 reduce.addEventListener('change',()=>{if(reduce.matches)videos.forEach(v=>v.pause());});
 const form=document.getElementById('brief-form');
-if(form){const choice=new URLSearchParams(location.search).get('service');if(choice&&[...form.elements.service.options].some(o=>o.value===choice))form.elements.service.value=choice;
-form.addEventListener('submit',e=>{e.preventDefault();const f=new FormData(form);const msg=locale.message+'\n\n'+[[locale.name,f.get('name')],[locale.business,f.get('business')],[locale.service,form.elements.service.selectedOptions[0].textContent],[locale.brief,f.get('brief')]].map(([k,v])=>k+': '+String(v).trim()).join('\n');document.getElementById('prepared-text').value=msg;document.getElementById('send-message').href='https://wa.me/351967901942?text='+encodeURIComponent(msg);const ready=document.getElementById('message-ready');ready.hidden=false;ready.scrollIntoView({behavior:reduce.matches?'instant':'smooth',block:'center'});document.getElementById('prepared-text').focus({preventScroll:true});});
-document.getElementById('copy-message').addEventListener('click',async()=>{const text=document.getElementById('prepared-text');try{await navigator.clipboard.writeText(text.value);document.getElementById('copy-status').textContent=locale.copied;}catch{text.focus();text.select();document.getElementById('copy-status').textContent=locale.copyFail;}});}
+if(form){
+ const choice=new URLSearchParams(location.search).get('service');
+ const service=Object.hasOwn(locale.serviceNames,choice)?locale.serviceNames[choice]:null;
+ form.addEventListener('submit',()=>{
+  const fields=[[locale.name,document.getElementById('brief-name').value.trim()]];
+  if(service)fields.push([locale.service,service]);
+  fields.push([locale.brief,document.getElementById('brief-task').value.trim()]);
+  form.elements.text.value=locale.message+'\n\n'+fields.map(([label,value])=>label+': '+value).join('\n');
+ });
+}
