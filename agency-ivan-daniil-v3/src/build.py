@@ -32,8 +32,10 @@ def motion(d):
     return '<div class="motion-art" aria-hidden="true"><div class="motion-ring"></div><div class="motion-type">'+''.join(f'<span>{x}</span>' for x in d['motionWords'])+'</div><div class="motion-grid"></div><span class="motion-id">I+D / MOTION STUDY 001</span></div>'
 
 def media(lang,cur,kind='coffee',hero=False):
-    d=DATA[lang]
-    return f'''<figure class="media-frame {'hero-film' if hero else ''} {kind}"><video muted playsinline loop preload="none" poster="{asset(cur,kind+'.webp')}" data-video data-src="{asset(cur,kind+'.mp4')}" aria-label="{esc(d['demo'])}"></video><div class="film-grain" aria-hidden="true"></div><div class="film-top"><span><i></i> I+D STUDIO</span><span>01 / LISBOA</span></div><div class="film-bottom"><span>{d['demo']}</span><button class="video-toggle" type="button" data-play="{d['play']}" data-pause="{d['pause']}" aria-label="{d['play']}">▶</button></div></figure>'''
+    d=DATA[lang];label=d['mediaLabels'][kind]
+    if kind in ['content','reels']:
+        return f'''<figure class="media-frame still {kind}"><img src="{asset(cur,kind+'.webp')}" width="900" height="1350" alt="{esc(label)}" fetchpriority="high"><div class="film-grain" aria-hidden="true"></div><figcaption class="film-bottom">{label}</figcaption></figure>'''
+    return f'''<figure class="media-frame {'hero-film' if hero else ''} {kind}"><video muted playsinline loop preload="none" poster="{asset(cur,kind+'.webp')}" data-video data-src="{asset(cur,kind+'.mp4')}" aria-label="{esc(label)}"></video><div class="film-grain" aria-hidden="true"></div><div class="film-top"><span><i></i> FILM / EDIT / MOTION</span><span>PLAY / LOOP</span></div><div class="film-bottom"><span>{label}</span><button class="video-toggle" type="button" data-play="{d['play']}" data-pause="{d['pause']}" aria-label="{d['play']}">▶</button></div></figure>'''
 
 def services(lang,cur):
  d=DATA[lang]
@@ -60,7 +62,7 @@ def process(lang,cur):
  return f'<section class="section process-section"><div class="wrap"><p class="eyebrow">I+D / PROCESS</p><h2>{d["processH"]}</h2><ol class="steps">{items}</ol></div></section>'
 
 def ideas(lang,cur):
- d=DATA[lang]; contents=[media(lang,cur),media(lang,cur,'camera'),motion(d)]
+ d=DATA[lang]; contents=[media(lang,cur),media(lang,cur,'barber'),motion(d)]
  cards=''.join(f'<article class="idea-card reveal">{m}<div class="idea-caption"><span class="eyebrow">{tag}</span><h3>{h}</h3><p>{p}</p></div></article>' for (tag,h,p),m in zip(d['ideas'],contents))
  return f'<section class="section"><div class="wrap"><div class="section-heading"><h2>{d["ideasH"]}</h2><p>{d["demoNote"]}</p></div><div class="ideas-grid">{cards}</div></div></section>'
 
@@ -72,9 +74,11 @@ def journal(lang,cur,full=False):
  d=DATA[lang]
  cards=''
  for i,ar in enumerate(d['articles']):
-  visual=f'<img src="{asset(cur,"coffee.webp" if i==0 else "camera.webp")}" width="{1280 if i==0 else 600}" height="{720 if i==0 else 1006}" loading="lazy" alt="">' if i<2 else motion(d)
+  if cur==path(lang,'article-'+str(i)): continue
+  image=['journal-social.webp','journal-shoot.webp','journal-edit.webp'][i]
+  visual=f'<img src="{asset(cur,image)}" width="1200" height="750" loading="lazy" alt="{esc(d["journalAlt"][i])}">' 
   cards+=f'<article class="article-card reveal"><a href="{link(lang,"article-"+str(i),cur)}"><div class="article-image">{visual}<span class="article-index mono">0{i+1}</span></div><div class="article-meta mono">{ar["category"]} / 04.11.2026</div><h3>{ar["title"]}</h3><p>{ar["excerpt"]}</p><span class="text-link">{d["read"]} ↗</span></a></article>'
- return f'<section class="section journal-section {"paper" if full else ""}"><div class="wrap">'+('' if full else f'<div class="section-heading"><h2>{d["journalH"]}</h2><a class="text-link" href="{link(lang,"blog",cur)}">{d["allArticles"]} ↗</a></div>')+f'<div class="article-grid">{cards}</div></div></section>'
+ return f'<section class="section journal-section {"paper" if full else ""}"><div class="wrap">'+('' if full else f'<div class="section-heading"><h2>{d["journalH"]}</h2><a class="text-link" href="{link(lang,"blog",cur)}">{d["allArticles"]} ↗</a></div>')+f'<div class="article-grid {"two-articles" if cur.startswith(("blog/", "en/blog/", "ru/blog/")) and not cur.endswith("/index.html") else ""}">{cards}</div></div></section>'
 
 def faq(lang,items):
  d=DATA[lang]; bits=''.join(f'<details><summary>{q}<span aria-hidden="true">+</span></summary><p>{a}</p></details>' for q,a in items)
@@ -86,11 +90,11 @@ def cta(lang,cur):
 
 def home(lang,cur):
  d=DATA[lang]
- return f'''<section class="hero wrap"><div class="hero-heading"><div><p class="eyebrow"><i></i>{d['eyebrow']}</p><h1>{d['homeH']}</h1></div><div class="hero-aside"><p class="lead">{d['homeLead']}</p><div class="hero-actions">{btn(d['cta'],link(lang,'contact',cur))}<a class="text-link" href="#package">400 € {d['month']} ↓</a></div></div></div>{media(lang,cur,'coffee',True)}<div class="hero-caption mono"><span>{d['homeTitle']}</span><span>FILM / EDIT / MOTION / SOCIAL</span></div></section>'''+services(lang,cur)+package(lang,cur)+ideas(lang,cur)+process(lang,cur)+team(lang,cur)+journal(lang,cur)+faq(lang,d['services']['content']['faqs'])+cta(lang,cur)
+ return f'''<section class="hero wrap"><div class="hero-heading"><div><p class="eyebrow"><i></i>{d['eyebrow']}</p><h1>{d['homeH']}</h1></div><div class="hero-aside"><p class="lead">{d['homeLead']}</p><div class="hero-actions">{btn(d['cta'],link(lang,'contact',cur))}<a class="text-link" href="#package">400 € {d['month']} ↓</a></div></div></div>{media(lang,cur,'hero',True)}<div class="hero-caption mono"><span>{d['homeTitle']}</span><span>FILM / EDIT / MOTION / SOCIAL</span></div></section>'''+services(lang,cur)+package(lang,cur)+ideas(lang,cur)+process(lang,cur)+team(lang,cur)+journal(lang,cur)+faq(lang,d['services']['content']['faqs'])+cta(lang,cur)
 
 def service_page(lang,key,cur):
  d=DATA[lang];s=d['services'][key]
- visual=motion(d) if key=='motion' else media(lang,cur,'camera' if key in ['video','reels'] else 'coffee')
+ visual=motion(d) if key=='motion' else media(lang,cur,{'content':'content','reels':'reels','video':'camera'}[key])
  who=''.join(f'<li>{x}</li>' for x in s['who']); out=''.join(f'<li>{x}</li>' for x in s['out'])
  return f'''<section class="service-hero wrap"><div><p class="eyebrow">{s['tag']} · LISBOA</p><h1>{s['h']}</h1><p class="lead">{s['lead']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="service-seo-label mono">{s['title']}</p></div><div class="service-visual">{visual}</div></section><section class="section paper"><div class="wrap"><div class="section-heading"><h2>{d['forWho']}</h2><p>{s['intro']}</p></div><ul class="who-grid">{who}</ul></div></section><section class="section"><div class="wrap delivery-layout"><div><p class="eyebrow">I+D / OUTPUT</p><h2>{d['deliver']}</h2><ul class="check-list">{out}</ul></div><aside class="scope-panel"><p class="eyebrow">{d['scope']}</p><h3>{s['price']}</h3><p>{s['priceText']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="fineprint">{d['terms']}</p></aside></div></section>'''+(package(lang,cur) if key=='content' else '')+process(lang,cur)+faq(lang,s['faqs'])+f'<section class="section paper"><div class="wrap"><p class="eyebrow">{d["related"]}</p><div class="related-services">'+''.join(f'<a href="{link(lang,k,cur)}">{ss["name"]} ↗</a>' for k,ss in d['services'].items() if k!=key)+'</div></div></section>'+cta(lang,cur)
 
@@ -102,20 +106,26 @@ def article(lang,idx,cur):
  d=DATA[lang]; ar=d['articles'][idx]
  toc=''.join(f'<a href="#part-{i}"><span>0{i+1}</span>{h}</a>' for i,(h,p) in enumerate(ar['sections']))
  body=''.join(f'<section id="part-{i}"><h2>{h}</h2><p>{p}</p></section>' for i,(h,p) in enumerate(ar['sections']))
- return f'''<header class="article-heading wrap"><a class="text-link" href="{link(lang,'blog',cur)}">← {d['back']}</a><p class="eyebrow">{ar['category']} / JOURNAL</p><h1>{ar['title']}</h1><p class="lead">{ar['excerpt']}</p><p class="mono">{d['author']} · 04.11.2026 · 3 {d['minutes']}</p></header><div class="article-body wrap"><nav class="toc" aria-label="{d['nav'][3]}">{toc}</nav><article class="prose">{body}<aside class="article-offer"><h2>{d['monthly']}</h2><p>400 € {d['month']} · {d['trial']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service=content')}</aside><p><a class="text-link" href="{link(lang,'content',cur)}">{d['services']['content']['name']} ↗</a><br><a class="text-link" href="{link(lang,'video',cur)}">{d['services']['video']['name']} ↗</a></p></article></div>'''+journal(lang,cur)+cta(lang,cur)
+ return f'''<header class="article-heading wrap"><a class="text-link" href="{link(lang,'blog',cur)}">← {d['back']}</a><p class="eyebrow">{ar['category']} / JOURNAL</p><h1>{ar['title']}</h1><p class="lead">{ar['excerpt']}</p><p class="mono">{d['author']} · 04.11.2026 · 3 {d['minutes']}</p></header><figure class="article-cover wrap"><img src="{asset(cur,['journal-social.webp','journal-shoot.webp','journal-edit.webp'][idx])}" width="1200" height="750" alt="{esc(d['journalAlt'][idx])}"></figure><div class="article-body wrap"><nav class="toc" aria-label="{d['nav'][3]}">{toc}</nav><article class="prose">{body}<aside class="article-offer"><h2>{d['monthly']}</h2><p>400 € {d['month']} · {d['trial']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service=content')}</aside><p><a class="text-link" href="{link(lang,'content',cur)}">{d['services']['content']['name']} ↗</a><br><a class="text-link" href="{link(lang,'video',cur)}">{d['services']['video']['name']} ↗</a></p></article></div>'''+journal(lang,cur)+cta(lang,cur)
 
 def credits(lang,cur):
  d=DATA[lang]
- return f'''<section class="section wrap legal"><p class="eyebrow">I+D / INFO</p><h1>{d['creditTitle']}</h1><p class="lead">{d['creditText']}</p><h2>Mixkit</h2><p><a href="https://mixkit.co/free-stock-video/employee-serving-a-cup-of-coffee-from-a-machine-41860/">Employee serving a cup of coffee from a machine · 41860 ↗</a></p><p><a href="https://mixkit.co/license/#videoFree">Mixkit Stock Video Free License ↗</a></p><h2>Pexels / Amar Preciado</h2><p><a href="https://www.pexels.com/video/a-videographer-holding-a-camera-7112246/">A Videographer Holding a Camera · 7112246 ↗</a></p><p><a href="https://www.pexels.com/license/">Pexels License ↗</a></p><h2>{d['credits']}</h2><p>{d['privacyText']}</p><a href="tel:+{PHONE}">+351 967 901 942</a></section>'''
+ sources=[('Mixkit', 'Film production — 44069', 'https://mixkit.co/free-stock-video/young-man-recording-with-a-camera-on-a-set-44069/'), ('Mixkit', 'Barber — 43241', 'https://mixkit.co/free-stock-video/barber-begins-to-cut-the-hair-of-his-client-43241/'), ('Mixkit', 'Coffee — 41860', 'https://mixkit.co/free-stock-video/employee-serving-a-cup-of-coffee-from-a-machine-41860/'), ('Pexels / Amar Preciado', 'Product shoot — 7112246', 'https://www.pexels.com/video/a-videographer-holding-a-camera-7112246/'), ('Pexels / cottonbro studio', 'Social media — 5081926', 'https://www.pexels.com/photo/person-using-a-smartphone-5081926/'), ('Pexels / The Lazy Artist Gallery', 'Camera equipment — 4164088', 'https://www.pexels.com/photo/digital-camera-with-different-lenses-on-table-4164088/'), ('Pexels / Amar Preciado', 'Editing — 11025648', 'https://www.pexels.com/photo/a-laptop-near-the-computer-set-on-the-table-11025648/'), ('Pexels / Hanna Pad', 'Brand content — 12433033', 'https://www.pexels.com/photo/a-woman-being-recorded-on-a-camera-12433033/'), ('Pexels / Alan Quirván', 'Recording — 14540964', 'https://www.pexels.com/photo/woman-during-recording-14540964/')]
+ items=''.join(f'<li><a href="{url}">{label} ↗</a><br><small>{author}</small></li>' for author,label,url in sources)
+ return f'''<section class="section wrap legal"><p class="eyebrow">I+D / INFO</p><h1>{d['creditTitle']}</h1><p class="lead">{d['creditText']}</p><ul class="media-credits">{items}</ul><p><a href="https://mixkit.co/license/#videoFree">Mixkit License ↗</a> · <a href="https://www.pexels.com/license/">Pexels License ↗</a></p><h2>{d['credits']}</h2><p>{d['privacyText']}</p><a href="tel:+{PHONE}">+351 967 901 942</a></section>'''
 
 def render(lang,key):
  d=DATA[lang];cur=path(lang,key)
  title=d['homeTitle'] if key=='home' else d['services'][key]['title'] if key in d['services'] else d['articles'][int(key.split('-')[1])]['title'] if key.startswith('article-') else {'blog':d['nav'][3]+' — '+d['journalH'].replace('<br>',' '),'contact':d['contactTitle'],'credits':d['creditTitle']}[key]
  desc=d['services'][key]['lead'] if key in d['services'] else d['articles'][int(key.split('-')[1])]['excerpt'] if key.startswith('article-') else d['contactLead'] if key=='contact' else d['homeLead']
  canonical=BASE+cur
- head=f'''<!doctype html><html lang="{d['lang']}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{esc(title)} | Ivan &amp; Daniil</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#111411"><link rel="canonical" href="{canonical}"><link rel="icon" href="{asset(cur,'icon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="{asset(cur,'style.css')}?v={CSS_REV}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}"><meta property="og:type" content="{'article' if key.startswith('article-') else 'website'}"><meta property="og:url" content="{canonical}"><meta property="og:site_name" content="Ivan &amp; Daniil"><meta property="og:image" content="{BASE}assets/social.jpg"><meta name="twitter:card" content="summary_large_image">'''
+ is_article=key.startswith('article-')
+ share_image=BASE+'assets/'+(['journal-social.webp','journal-shoot.webp','journal-edit.webp'][int(key.split('-')[1])] if is_article else 'social.jpg')
+ share_type='image/webp' if is_article else 'image/jpeg'
+ share_height='750' if is_article else '630' 
+ head=f'''<!doctype html><html lang="{d['lang']}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{esc(title)} | Ivan &amp; Daniil</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#111411"><link rel="canonical" href="{canonical}"><link rel="icon" href="{asset(cur,'icon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="{asset(cur,'style.css')}?v={CSS_REV}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}"><meta property="og:type" content="{'article' if key.startswith('article-') else 'website'}"><meta property="og:url" content="{canonical}"><meta property="og:site_name" content="Ivan &amp; Daniil"><meta property="og:image" content="{share_image}"><meta name="twitter:card" content="summary_large_image">'''
  locales={'pt':'pt_PT','en':'en_GB','ru':'ru_RU'}
- head+=f'<meta property="og:locale" content="{locales[lang]}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{esc(d['homeTitle'])}"><meta name="twitter:title" content="{esc(title)}"><meta name="twitter:description" content="{esc(desc)}"><meta name="twitter:image" content="{BASE}assets/social.jpg"><meta name="twitter:image:alt" content="{esc(d['homeTitle'])}">'
+ head+=f'<meta property="og:locale" content="{locales[lang]}"><meta property="og:image:type" content="{share_type}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="{share_height}"><meta property="og:image:alt" content="{esc(d['homeTitle'])}"><meta name="twitter:title" content="{esc(title)}"><meta name="twitter:description" content="{esc(desc)}"><meta name="twitter:image" content="{share_image}"><meta name="twitter:image:alt" content="{esc(d['homeTitle'])}">'
  for lng in DATA:
   head+=f'<link rel="alternate" hreflang="{DATA[lng]["lang"]}" href="{aurl(lng,key)}">'
   if lng!=lang: head+=f'<meta property="og:locale:alternate" content="{locales[lng]}">'
@@ -132,7 +142,7 @@ def render(lang,key):
    else:offer['priceSpecification']={'@type':'UnitPriceSpecification','price':plan['price'],'priceCurrency':'EUR','unitText':d['month']}
    offers.append(offer)
   graph.append({'@type':'OfferCatalog','@id':aurl(lang,'content')+'#packages','name':d['monthly'],'itemListElement':offers})
- if key.startswith('article-'):graph.append({'@type':'BlogPosting','headline':title,'description':desc,'datePublished':'2026-11-04','dateModified':'2026-11-04','author':{'@id':BASE+'#studio'},'publisher':{'@id':BASE+'#studio'},'mainEntityOfPage':canonical,'image':BASE+'assets/social.jpg','inLanguage':d['lang']})
+ if key.startswith('article-'):graph.append({'@type':'BlogPosting','headline':title,'description':desc,'datePublished':'2026-11-04','dateModified':'2026-11-04','author':{'@id':BASE+'#studio'},'publisher':{'@id':BASE+'#studio'},'mainEntityOfPage':canonical,'image':share_image,'inLanguage':d['lang']})
  if key!='home':graph.append({'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':1,'name':'Ivan & Daniil','item':aurl(lang,'home')},{'@type':'ListItem','position':2,'name':title,'item':canonical}]})
  head+='<script type="application/ld+json">'+json.dumps({'@context':'https://schema.org','@graph':graph},ensure_ascii=False).replace('</',r'<\/')+'</script></head>'
  nav=f'''<a href="{link(lang,'home',cur,'#services')}">{d['nav'][0]}</a><a href="{link(lang,'content',cur,'#package')}">{d['nav'][1]}</a><a href="{link(lang,'home',cur,'#studio')}">{d['nav'][2]}</a><a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a>'''

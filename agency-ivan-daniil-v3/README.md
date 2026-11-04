@@ -18,7 +18,7 @@ Unique titles and descriptions, canonical URLs, matching PT/EN/RU alternate link
 
 ## Media and licenses
 
-Illustrative stock footage, explicitly labelled on the website. It is not the agency's portfolio, clients, or team.
+Licensed visual references with scene-specific captions. Author and license links are retained on the credits page; the media are not presented as client case studies or team portraits.
 
 - Mixkit: **Employee serving a cup of coffee from a machine**, asset 41860. Source: https://mixkit.co/free-stock-video/employee-serving-a-cup-of-coffee-from-a-machine-41860/ . The individual source page identifies commercial and personal use under the Mixkit Stock Video Free License: https://mixkit.co/license/#videoFree . Download used: https://assets.mixkit.co/videos/41860/41860-720.mp4 . Checked 2026-11-04.
 - Pexels / **Amar Preciado**: **A Videographer Holding a Camera**, asset 7112246. Source: https://www.pexels.com/video/a-videographer-holding-a-camera-7112246/ . License: https://www.pexels.com/license/ . Source download resolved by Pexels: https://videos.pexels.com/video-files/7112246/7112246-hd_1080_1812_25fps.mp4 . Checked 2026-11-04.
@@ -48,3 +48,9 @@ Optional business context update: added a clearly optional business field and de
 ## Approved monthly packages
 
 Start €400: 1 shoot up to 2h, 2 videos up to 30s, 4 posts, 4 Stories. Business €800 (recommended): 1 shoot up to 4h, 4 videos, 8 posts, 8 Stories. Premium from €1,200: 2 shoots up to 3h each, 6 videos, 12 posts, 12 Stories. Video duration is up to 30 seconds in all packages. All include ideas, planning, editing, Portuguese copy, Instagram/Facebook publishing, one revision round and a brief monthly report. Videos are additional to posts; cross-posting does not double quantities. Advertising spend is separate and paid directly to Meta/Google; advertising setup and management are also quoted separately. Travel, timelines, payment and VAT are agreed before starting. Selected package is retained in the WhatsApp brief.
+
+## Varied media update
+
+Different assets are used for the homepage hero, café example, barbershop example, service pages and the three article covers. Current-article cards are excluded from related articles to avoid repeating their cover on the same page. Stock-source badges and stock wording have been removed from the main experience at the owner's request. Source and license documentation remains on the credits page and here.
+
+New assets: Mixkit 44069 (film set), Mixkit 43241 (barber); Pexels photos 5081926 by cottonbro studio, 4164088 by The Lazy Artist Gallery, 11025648 by Amar Preciado, 12433033 by Hanna Pad, 14540964 by Alan Quirván. Individual source links are listed on the credits page. Mixkit pages state commercial use under the Free License; Pexels items are covered by the Pexels License. Video trims and compression retain the existing silent H.264/fast-start/lazy-load policy.

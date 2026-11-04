@@ -20,8 +20,8 @@
     "monthly": "Conteúdo mensal",
     "month": "/ mês",
     "trial": "O primeiro mês é um teste pago.",
-    "demo": "Direção visual · imagens de stock",
-    "demoNote": "Referências visuais para o seu próximo conteúdo. Imagens de stock, não trabalhos realizados pelo estúdio.",
+    "demo": "Direção visual",
+    "demoNote": "Ideias para filmar: produto, processo, pessoas e ambiente. Encontramos a história certa para o seu negócio.",
     "play": "Reproduzir vídeo",
     "pause": "Pausar vídeo",
     "servicesH": "Uma ideia.<br>O formato certo.",
@@ -142,7 +142,7 @@
     ],
     "creditTitle": "Imagens, créditos e privacidade",
     "privacyText": "Este site estático não usa analytics, pixels de publicidade nem cookies de rastreio. O briefing é preparado no seu navegador. Ao clicar em «Enviar por WhatsApp», o texto é passado ao WhatsApp; a mensagem só é enviada após a sua confirmação na aplicação. Aplicam-se as condições da Meta. O alojamento GitHub Pages pode tratar registos técnicos de acesso.",
-    "creditText": "Os vídeos desta versão são referências visuais gratuitas de Mixkit e Pexels. Não representam clientes, equipa nem projetos realizados pelo estúdio.",
+    "creditText": "Autores dos materiais visuais e condições de utilização.",
     "services": {
       "content": {
         "slug": "conteudo-redes-sociais-lisboa",
@@ -469,7 +469,20 @@
       "Textos em português e publicação no Instagram / Facebook.",
       "Uma ronda de alterações e um relatório mensal breve."
     ],
-    "countAnswer": "Não. Os vídeos são contados à parte dos posts. Publicar o mesmo material no Instagram e Facebook não duplica a quantidade."
+    "countAnswer": "Não. Os vídeos são contados à parte dos posts. Publicar o mesmo material no Instagram e Facebook não duplica a quantidade.",
+    "mediaLabels": {
+      "hero": "Num set de filmagem",
+      "coffee": "Detalhes e ambiente",
+      "barber": "O trabalho em ação",
+      "camera": "Filmagem de produto",
+      "content": "Criação de conteúdo para marcas",
+      "reels": "Gravação de vídeo para redes sociais"
+    },
+    "journalAlt": [
+      "Redes sociais num smartphone",
+      "Câmara e objetivas preparadas para filmar",
+      "Posto de trabalho de edição de vídeo"
+    ]
   },
   "en": {
     "lang": "en",
@@ -492,8 +505,8 @@
     "monthly": "Monthly content",
     "month": "/ month",
     "trial": "The first month is a paid trial.",
-    "demo": "Visual direction · stock footage",
-    "demoNote": "Visual references for your next content project. Stock footage, not completed studio projects.",
+    "demo": "Visual direction",
+    "demoNote": "Filming ideas: products, processes, people and atmosphere. We’ll find a story that fits your business.",
     "play": "Play video",
     "pause": "Pause video",
     "servicesH": "One idea.<br>The right format.",
@@ -614,7 +627,7 @@
     ],
     "creditTitle": "Footage, credits and privacy",
     "privacyText": "This static website uses no analytics, advertising pixels or tracking cookies. Your brief is prepared in your browser. Clicking “Send via WhatsApp” passes the text to WhatsApp; the message is only sent after you confirm in the app. Meta’s terms apply. GitHub Pages hosting may process technical access logs.",
-    "creditText": "Videos in this version are free visual references from Mixkit and Pexels. They do not represent studio clients, team members or completed projects.",
+    "creditText": "Visual contributors and usage licenses.",
     "services": {
       "content": {
         "slug": "social-media-content-lisbon",
@@ -941,7 +954,20 @@
       "Portuguese copy and publishing on Instagram / Facebook.",
       "One revision round and a brief monthly report."
     ],
-    "countAnswer": "No. Videos are counted separately from posts. Publishing the same material on Instagram and Facebook does not double its quantity."
+    "countAnswer": "No. Videos are counted separately from posts. Publishing the same material on Instagram and Facebook does not double its quantity.",
+    "mediaLabels": {
+      "hero": "On a video set",
+      "coffee": "Details and atmosphere",
+      "barber": "The craft in action",
+      "camera": "Product filming",
+      "content": "Creating brand content",
+      "reels": "Recording social media video"
+    },
+    "journalAlt": [
+      "Using social media on a smartphone",
+      "Camera and lenses ready for a shoot",
+      "Video editing workstation"
+    ]
   },
   "ru": {
     "lang": "ru",
@@ -964,8 +990,8 @@
     "monthly": "Контент на месяц",
     "month": "/ месяц",
     "trial": "Первый месяц — платный тест.",
-    "demo": "Визуальное направление · стоковые кадры",
-    "demoNote": "Визуальные ориентиры для будущей съёмки. Стоковые кадры, а не выполненные проекты студии.",
+    "demo": "Визуальное направление",
+    "demoNote": "Идеи для съёмки: продукт, процесс, люди и атмосфера. Подберём историю под ваш бизнес.",
     "play": "Включить видео",
     "pause": "Пауза",
     "servicesH": "Одна идея.<br>Нужный формат.",
@@ -1086,7 +1112,7 @@
     ],
     "creditTitle": "Материалы, авторы и конфиденциальность",
     "privacyText": "На этом статическом сайте нет аналитики, рекламных пикселей и отслеживающих cookies. Бриф готовится в вашем браузере. При нажатии «Отправить в WhatsApp» текст передаётся в WhatsApp; сообщение отправится только после вашего подтверждения в приложении. Действуют условия Meta. Хостинг GitHub Pages может обрабатывать технические журналы доступа.",
-    "creditText": "Видео в этой версии — бесплатные визуальные ориентиры с Mixkit и Pexels. Они не изображают клиентов, сотрудников или выполненные проекты студии.",
+    "creditText": "Авторы визуальных материалов и условия использования.",
     "services": {
       "content": {
         "slug": "social-media-content-lisbon",
@@ -1413,6 +1439,19 @@
       "Тексты на португальском и публикации в Instagram / Facebook.",
       "Один раунд правок и краткий месячный отчёт."
     ],
-    "countAnswer": "Нет. Видео считаются отдельно от постов. Публикация одного материала в Instagram и Facebook не удваивает его количество."
+    "countAnswer": "Нет. Видео считаются отдельно от постов. Публикация одного материала в Instagram и Facebook не удваивает его количество.",
+    "mediaLabels": {
+      "hero": "На съёмочной площадке",
+      "coffee": "Детали и атмосфера",
+      "barber": "Мастер за работой",
+      "camera": "Съёмка продукта",
+      "content": "Создание контента для бренда",
+      "reels": "Запись видео для соцсетей"
+    },
+    "journalAlt": [
+      "Работа с соцсетями на смартфоне",
+      "Камера и объективы перед съёмкой",
+      "Рабочее место для монтажа видео"
+    ]
   }
 }
