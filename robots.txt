@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://ivanromanenko78.github.io/sitemap.xml
+
+Sitemap: https://ivanromanenko78.github.io/agency-ivan-daniil-v3/sitemap.xml
