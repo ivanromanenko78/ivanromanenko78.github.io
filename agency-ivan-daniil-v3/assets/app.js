@@ -19,11 +19,14 @@ const form=document.getElementById('brief-form');
 if(form){
  const choice=new URLSearchParams(location.search).get('service');
  const service=Object.hasOwn(locale.serviceNames,choice)?locale.serviceNames[choice]:null;
+ const requestedPlan=new URLSearchParams(location.search).get('plan');
+ const plan=Object.hasOwn(locale.planNames,requestedPlan)?locale.planNames[requestedPlan]:null;
  form.addEventListener('submit',()=>{
   const fields=[[locale.name,document.getElementById('brief-name').value.trim()]];
   const business=document.getElementById('brief-business').value.trim();
   if(business)fields.push([locale.business,business]);
   if(service)fields.push([locale.service,service]);
+  if(plan)fields.push([locale.planLabel,plan]);
   fields.push([locale.brief,document.getElementById('brief-task').value.trim()]);
   form.elements.text.value=locale.message+'\n\n'+fields.map(([label,value])=>label+': '+value).join('\n');
  });

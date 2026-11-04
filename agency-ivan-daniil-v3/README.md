@@ -44,3 +44,7 @@ All 33 pages checked for internal asset links, fragment links, unique page title
 Validation for this update: 12 contact-message checks across all three languages, including valid and invalid service contexts; all 33 pages checked for links, language alternates, JSON-LD and social metadata. Asset URLs use content hashes to avoid stale CSS/JavaScript after deployment.
 
 Optional business context update: added a clearly optional business field and descriptive name/task placeholders in PT/EN/RU. Filled business context is included in the WhatsApp message; empty business values are omitted. No response-time promises were added.
+
+## Approved monthly packages
+
+Start €400: 1 shoot up to 2h, 2 videos up to 30s, 4 posts, 4 Stories. Business €800 (recommended): 1 shoot up to 4h, 4 videos, 8 posts, 8 Stories. Premium from €1,200: 2 shoots up to 3h each, 6 videos, 12 posts, 12 Stories. Video duration is up to 30 seconds in all packages. All include ideas, planning, editing, Portuguese copy, Instagram/Facebook publishing, one revision round and a brief monthly report. Videos are additional to posts; cross-posting does not double quantities. Advertising spend is separate and paid directly to Meta/Google; advertising setup and management are also quoted separately. Travel, timelines, payment and VAT are agreed before starting. Selected package is retained in the WhatsApp brief.

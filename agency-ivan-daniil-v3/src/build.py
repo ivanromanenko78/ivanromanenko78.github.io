@@ -43,9 +43,16 @@ def services(lang,cur):
  return f'<section id="services" class="section paper"><div class="wrap"><div class="section-heading"><div><p class="eyebrow">I+D / {d["nav"][0]}</p><h2>{d["servicesH"]}</h2></div><p>{d["servicesLead"]}</p></div><div class="service-list">{cards}</div></div></section>'
 
 def package(lang,cur):
- d=DATA[lang]
- items=''.join(f'<li><span class="mono">{n}</span><div><h3>{h}</h3><p>{p}</p></div></li>' for n,h,p in d['includes'])
- return f'''<section id="package" class="section"><div class="wrap"><div class="section-heading"><div><p class="eyebrow">INSTAGRAM + FACEBOOK</p><h2>{d['packageH']}</h2></div><p>{d['packageLead']}</p></div><div class="package-layout"><aside class="price-panel reveal"><span class="eyebrow">{d['monthly']}</span><div class="big-price">400<span>€</span></div><span>{d['month']}</span><p>{d['trial']}</p>{btn(d['cta'],link(lang,'contact',cur)+'?service=content')}</aside><ul class="package-items">{items}</ul></div><p class="fineprint">{d['terms']}</p></div></section>'''
+ d=DATA[lang];cards=''
+ for plan in d['plans']:
+  recommended=plan['key']=='business'
+  badge=f'<span class="tier-badge">{d["recommended"]}</span>' if recommended else '<span class="tier-badge tier-badge-empty" aria-hidden="true">&nbsp;</span>'
+  rows=''.join(f'<div><dt>{label}</dt><dd>{value}</dd></div>' for label,value in zip(d['planLabels'],plan['values']))
+  prefix=f'<span class="tier-from">{d["from"]}</span>' if plan['key']=='premium' else ''
+  price='1 200' if plan['key']=='premium' else plan['price']
+  cards+=f'''<article class="tier-card {'tier-recommended' if recommended else ''}">{badge}<h3>{plan['name']}</h3><p class="tier-subtitle">{plan['subtitle']}</p><div class="tier-price">{prefix}<strong>{price} €</strong><span>{d['month']}</span></div><dl class="tier-features">{rows}</dl>{btn(d['choosePlan'],link(lang,'contact',cur)+'?service=content&plan='+plan['key'])}</article>'''
+ shared=''.join(f'<div><h4>{h}</h4><p>{p}</p></div>' for h,p in d['sharedFeatures'])
+ return f'''<section id="package" class="section"><div class="wrap"><div class="section-heading"><div><p class="eyebrow">INSTAGRAM + FACEBOOK</p><h2>{d['packageH']}</h2></div><p>{d['packageLead']}</p></div><div class="tier-grid">{cards}</div><div class="package-common"><h3>{d['sharedTitle']}</h3><div class="package-shared">{shared}</div><p class="package-counting">{d['countingNote']}</p><p class="fineprint">{d['trial']}</p></div><aside class="ad-budget"><span aria-hidden="true">↗</span><div><h3>{d['adBudgetTitle']}</h3><p>{d['adBudgetNote']}</p></div></aside><p class="fineprint">{d['terms']}</p></div></section>'''
 
 def process(lang,cur):
  d=DATA[lang]
@@ -117,6 +124,14 @@ def render(lang,key):
  org={'@type':'Organization','@id':BASE+'#studio','name':'Ivan & Daniil','url':BASE,'telephone':'+351967901942','areaServed':{'@type':'City','name':'Lisboa'}}
  graph=[org,{'@type':('ContactPage' if key=='contact' else 'CollectionPage' if key=='blog' else 'WebPage'),'@id':canonical+'#page','url':canonical,'name':title,'description':desc,'inLanguage':d['lang'],'isPartOf':{'@id':BASE+'#website'}},{'@type':'WebSite','@id':BASE+'#website','name':'Ivan & Daniil','url':BASE}]
  if key in d['services']: graph.append({'@type':'Service','name':title,'description':desc,'url':canonical,'provider':{'@id':BASE+'#studio'},'areaServed':{'@type':'City','name':'Lisboa'}})
+ if key in ['home','content']:
+  offers=[]
+  for plan in d['plans']:
+   offer={'@type':'Offer','url':aurl(lang,'content')+'#package','name':plan['name'],'priceCurrency':'EUR','itemOffered':{'@type':'Service','name':plan['name']+' — '+d['services']['content']['name'],'provider':{'@id':BASE+'#studio'}}}
+   if plan['key']=='premium':offer['priceSpecification']={'@type':'UnitPriceSpecification','minPrice':plan['price'],'priceCurrency':'EUR','unitText':d['month']}
+   else:offer['priceSpecification']={'@type':'UnitPriceSpecification','price':plan['price'],'priceCurrency':'EUR','unitText':d['month']}
+   offers.append(offer)
+  graph.append({'@type':'OfferCatalog','@id':aurl(lang,'content')+'#packages','name':d['monthly'],'itemListElement':offers})
  if key.startswith('article-'):graph.append({'@type':'BlogPosting','headline':title,'description':desc,'datePublished':'2026-11-04','dateModified':'2026-11-04','author':{'@id':BASE+'#studio'},'publisher':{'@id':BASE+'#studio'},'mainEntityOfPage':canonical,'image':BASE+'assets/social.jpg','inLanguage':d['lang']})
  if key!='home':graph.append({'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':1,'name':'Ivan & Daniil','item':aurl(lang,'home')},{'@type':'ListItem','position':2,'name':title,'item':canonical}]})
  head+='<script type="application/ld+json">'+json.dumps({'@context':'https://schema.org','@graph':graph},ensure_ascii=False).replace('</',r'<\/')+'</script></head>'
@@ -130,8 +145,9 @@ def render(lang,key):
  elif key=='credits':body=credits(lang,cur)
  else:body=article(lang,int(key.split('-')[1]),cur)
  footer=f'''<footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="footer-wordmark" href="{link(lang,'home',cur)}">IVAN<span>+</span>DANIIL</a><p>{d['footerLine']}<br>Lisboa, Portugal</p></div><div class="footer-links">{''.join(f'<a href="{link(lang,k,cur)}">{s["name"]}</a>' for k,s in d['services'].items())}<a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a></div><div class="footer-bottom"><span>© 2026 IVAN & DANIIL</span><a href="tel:+{PHONE}">+351 967 901 942</a><a href="{link(lang,'credits',cur)}">{d['credits']}</a><a href="#main" aria-label="Top">↑</a></div></div></footer>'''
- locale={k:d[k] for k in ['message','name','business','service','brief','menu','close']}
+ locale={k:d[k] for k in ['message','name','business','service','brief','menu','close','planLabel']}
  locale['serviceNames']={k:v['name'] for k,v in d['services'].items()}
+ locale['planNames']={v['key']:v['name'] for v in d['plans']}
  result=head+header+'<main id="main">'+body+'</main>'+footer+'<script id="locale" type="application/json">'+json.dumps(locale,ensure_ascii=False)+'</script>'+f'<script defer src="{asset(cur,"app.js")}?v={JS_REV}"></script></body></html>'
  target=ROOT/cur;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(result)
  return canonical

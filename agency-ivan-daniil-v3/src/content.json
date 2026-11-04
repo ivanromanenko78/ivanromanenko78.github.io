@@ -27,8 +27,8 @@
     "servicesH": "Uma ideia.<br>O formato certo.",
     "servicesLead": "Conteúdo regular ou um projeto específico. Escolha o que o seu negócio precisa agora.",
     "details": "Ver serviço",
-    "packageH": "Um mês de conteúdo.<br>Um plano claro.",
-    "packageLead": "Para negócios que têm muito para mostrar e pouco tempo para as redes sociais.",
+    "packageH": "O seu ritmo.<br>O seu pacote.",
+    "packageLead": "Da presença essencial a filmagens regulares. Escolha o volume de conteúdo de que o seu negócio precisa todos os meses.",
     "includes": [
       [
         "01",
@@ -61,7 +61,7 @@
         "O que publicámos e os indicadores disponíveis."
       ]
     ],
-    "terms": "Publicidade, gestão de campanhas e investimento em anúncios são orçamentados à parte. Plano de publicações, contagem dos materiais, deslocação, prazos, pagamento e IVA confirmados por escrito antes de começar.",
+    "terms": "Deslocações, prazos, pagamento e IVA são acordados por escrito antes de começar.",
     "processH": "Do primeiro olá<br>à última publicação.",
     "steps": [
       [
@@ -158,13 +158,13 @@
           "Consegue reservar até duas horas para uma sessão."
         ],
         "out": [
-          "2 vídeos até 30 segundos cada.",
-          "4 posts e 4 Stories do material captado.",
-          "Textos em português, publicação e relatório breve.",
-          "Uma ronda de alterações."
+          "Filmagens e 2, 4 ou 6 vídeos até 30 segundos, conforme o pacote.",
+          "4, 8 ou 12 posts e o mesmo número de Stories.",
+          "Textos em português e publicação no Instagram / Facebook.",
+          "Uma ronda de alterações e um relatório mensal breve."
         ],
-        "price": "400 € / mês",
-        "priceText": "Primeiro mês como teste pago. Confirmamos os detalhes do pacote e o IVA antes do início.",
+        "price": "Desde 400 € / mês",
+        "priceText": "Essencial — 400 €, Negócio — 800 €, Premium — desde 1 200 € por mês. Confirmamos o âmbito e as condições antes de começar.",
         "faqs": [
           [
             "A publicidade está incluída?",
@@ -175,8 +175,8 @@
             "A gestão de Direct e o atendimento a clientes não estão incluídos no pacote de produção e publicação."
           ],
           [
-            "Os vídeos fazem parte dos quatro posts?",
-            "A contagem e a distribuição exata das publicações ficam descritas na proposta, antes de começar."
+            "Os vídeos estão incluídos no número de posts?",
+            "Não. Os vídeos são contados à parte dos posts. Publicar o mesmo material no Instagram e Facebook não duplica a quantidade."
           ],
           [
             "Prometem novos clientes?",
@@ -394,7 +394,82 @@
     "businessLabel": "O seu negócio (opcional)",
     "namePlaceholder": "Como se chama?",
     "businessPlaceholder": "Por exemplo: café, estúdio de ioga, marca de roupa",
-    "briefPlaceholder": "O que gostaria de filmar e para quando? Pode ser breve."
+    "briefPlaceholder": "O que gostaria de filmar e para quando? Pode ser breve.",
+    "recommended": "Recomendado",
+    "from": "desde",
+    "planLabel": "Pacote",
+    "choosePlan": "Escolher pacote",
+    "planLabels": [
+      "Filmagens por mês",
+      "Vídeos até 30 segundos",
+      "Posts",
+      "Stories"
+    ],
+    "plans": [
+      {
+        "key": "start",
+        "name": "Essencial",
+        "price": "400",
+        "subtitle": "Uma presença essencial nas redes sociais.",
+        "values": [
+          "1 × até 2 horas",
+          "2",
+          "4",
+          "4"
+        ]
+      },
+      {
+        "key": "business",
+        "name": "Negócio",
+        "price": "800",
+        "subtitle": "Mais vídeo e publicações regulares.",
+        "values": [
+          "1 × até 4 horas",
+          "4",
+          "8",
+          "8"
+        ]
+      },
+      {
+        "key": "premium",
+        "name": "Premium",
+        "price": "1200",
+        "subtitle": "Mais filmagens e conteúdo todos os meses.",
+        "values": [
+          "2 × até 3 horas",
+          "6",
+          "12",
+          "12"
+        ]
+      }
+    ],
+    "sharedTitle": "Incluído em todos os pacotes",
+    "sharedFeatures": [
+      [
+        "Ideias, filmagem e edição",
+        "Planeamos o conteúdo, filmamos e preparamos os materiais."
+      ],
+      [
+        "Textos e publicação",
+        "Textos em português. Instagram e Facebook."
+      ],
+      [
+        "Alterações e relatório",
+        "Uma ronda de alterações e um relatório mensal breve."
+      ]
+    ],
+    "countingNote": "Os vídeos são contados à parte dos posts. Os materiais são criados a partir das filmagens do pacote. Publicar o mesmo material em duas redes não duplica a quantidade.",
+    "adBudgetTitle": "Investimento em anúncios à parte",
+    "adBudgetNote": "O investimento em anúncios não está incluído nos pacotes e é pago à parte, diretamente à Meta / Google. A configuração e a gestão das campanhas também são orçamentadas separadamente.",
+    "contentPrice": "Desde 400 € / mês",
+    "contentPriceText": "Essencial — 400 €, Negócio — 800 €, Premium — desde 1 200 € por mês. Confirmamos o âmbito e as condições antes de começar.",
+    "contentOut": [
+      "Filmagens e 2, 4 ou 6 vídeos até 30 segundos, conforme o pacote.",
+      "4, 8 ou 12 posts e o mesmo número de Stories.",
+      "Textos em português e publicação no Instagram / Facebook.",
+      "Uma ronda de alterações e um relatório mensal breve."
+    ],
+    "countAnswer": "Não. Os vídeos são contados à parte dos posts. Publicar o mesmo material no Instagram e Facebook não duplica a quantidade."
   },
   "en": {
     "lang": "en",
@@ -424,8 +499,8 @@
     "servicesH": "One idea.<br>The right format.",
     "servicesLead": "Regular content or a standalone project. Choose what your business needs now.",
     "details": "Explore service",
-    "packageH": "A month of content.<br>A clear plan.",
-    "packageLead": "For businesses with plenty to show and little time for social media.",
+    "packageH": "Your pace.<br>Your package.",
+    "packageLead": "From a basic social presence to regular shoots. Choose the amount of monthly content your business needs.",
     "includes": [
       [
         "01",
@@ -458,7 +533,7 @@
         "What we published and the available metrics."
       ]
     ],
-    "terms": "Advertising setup, campaign management and ad spend are quoted separately. Publishing plan, content counting, travel, timing, payment and VAT are confirmed in writing before starting.",
+    "terms": "Travel, timing, payment and VAT are agreed in writing before starting.",
     "processH": "From the first hello<br>to the final post.",
     "steps": [
       [
@@ -555,13 +630,13 @@
           "You can reserve up to two hours for filming."
         ],
         "out": [
-          "2 videos up to 30 seconds each.",
-          "4 posts and 4 Stories from the session.",
-          "Portuguese copy, publishing and a brief report.",
-          "One revision round."
+          "Shoots and 2, 4 or 6 videos up to 30 seconds, according to your package.",
+          "4, 8 or 12 posts and the same number of Stories.",
+          "Portuguese copy and publishing on Instagram / Facebook.",
+          "One revision round and a brief monthly report."
         ],
-        "price": "€400 / month",
-        "priceText": "The first month is a paid trial. Package details and VAT are confirmed before starting.",
+        "price": "From €400 / month",
+        "priceText": "Start — €400, Business — €800, Premium — from €1,200 per month. Scope and terms are confirmed before starting.",
         "faqs": [
           [
             "Is advertising included?",
@@ -572,8 +647,8 @@
             "Direct messages and customer service are outside the production and publishing package."
           ],
           [
-            "Are the videos included in the four posts?",
-            "The exact counting and distribution of publications are set out in the proposal before starting."
+            "Are videos included in the post count?",
+            "No. Videos are counted separately from posts. Publishing the same material on Instagram and Facebook does not double its quantity."
           ],
           [
             "Do you promise new customers?",
@@ -791,7 +866,82 @@
     "businessLabel": "Your business (optional)",
     "namePlaceholder": "What should we call you?",
     "businessPlaceholder": "For example: a café, yoga studio or clothing brand",
-    "briefPlaceholder": "What would you like to film, and by when? A few words are enough."
+    "briefPlaceholder": "What would you like to film, and by when? A few words are enough.",
+    "recommended": "Recommended",
+    "from": "from",
+    "planLabel": "Package",
+    "choosePlan": "Choose package",
+    "planLabels": [
+      "Monthly shoots",
+      "Videos up to 30 seconds",
+      "Posts",
+      "Stories"
+    ],
+    "plans": [
+      {
+        "key": "start",
+        "name": "Start",
+        "price": "400",
+        "subtitle": "A basic presence on social media.",
+        "values": [
+          "1 × up to 2 hours",
+          "2",
+          "4",
+          "4"
+        ]
+      },
+      {
+        "key": "business",
+        "name": "Business",
+        "price": "800",
+        "subtitle": "More video and regular publishing.",
+        "values": [
+          "1 × up to 4 hours",
+          "4",
+          "8",
+          "8"
+        ]
+      },
+      {
+        "key": "premium",
+        "name": "Premium",
+        "price": "1200",
+        "subtitle": "More shoots and content every month.",
+        "values": [
+          "2 × up to 3 hours",
+          "6",
+          "12",
+          "12"
+        ]
+      }
+    ],
+    "sharedTitle": "Included in every package",
+    "sharedFeatures": [
+      [
+        "Ideas, filming and editing",
+        "We plan the content, film and prepare your materials."
+      ],
+      [
+        "Copy and publishing",
+        "Portuguese copy. Instagram and Facebook."
+      ],
+      [
+        "Revisions and report",
+        "One revision round and a brief monthly report."
+      ]
+    ],
+    "countingNote": "Videos are counted separately from posts. Content is created from the package’s shoots. Publishing the same material on two networks does not double the quantity.",
+    "adBudgetTitle": "Advertising budget is separate",
+    "adBudgetNote": "Advertising spend is not included in package prices and is paid separately, directly to Meta / Google. Advertising setup and campaign management are also quoted separately.",
+    "contentPrice": "From €400 / month",
+    "contentPriceText": "Start — €400, Business — €800, Premium — from €1,200 per month. Scope and terms are confirmed before starting.",
+    "contentOut": [
+      "Shoots and 2, 4 or 6 videos up to 30 seconds, according to your package.",
+      "4, 8 or 12 posts and the same number of Stories.",
+      "Portuguese copy and publishing on Instagram / Facebook.",
+      "One revision round and a brief monthly report."
+    ],
+    "countAnswer": "No. Videos are counted separately from posts. Publishing the same material on Instagram and Facebook does not double its quantity."
   },
   "ru": {
     "lang": "ru",
@@ -821,8 +971,8 @@
     "servicesH": "Одна идея.<br>Нужный формат.",
     "servicesLead": "Регулярный контент или отдельный проект. Выберите то, что сейчас нужно вашему бизнесу.",
     "details": "Подробнее об услуге",
-    "packageH": "Месяц контента.<br>Понятный план.",
-    "packageLead": "Для бизнеса, которому есть что показать, но некогда заниматься соцсетями.",
+    "packageH": "Ваш темп.<br>Ваш пакет.",
+    "packageLead": "От базового присутствия до регулярных съёмок. Выберите нужный объём контента на месяц.",
     "includes": [
       [
         "01",
@@ -855,7 +1005,7 @@
         "Что опубликовали и какие показатели доступны."
       ]
     ],
-    "terms": "Настройка рекламы, ведение кампаний и рекламный бюджет оплачиваются отдельно. План публикаций, подсчёт материалов, выезд, сроки, оплата и IVA фиксируются письменно до начала работы.",
+    "terms": "Условия выезда, сроки, оплата и IVA фиксируются письменно до начала работы.",
     "processH": "От первого разговора<br>до последнего поста.",
     "steps": [
       [
@@ -952,13 +1102,13 @@
           "Вы готовы выделить до двух часов на съёмку."
         ],
         "out": [
-          "2 видео до 30 секунд каждое.",
-          "4 поста и 4 Stories из отснятого материала.",
-          "Тексты на португальском, публикации и краткий отчёт.",
-          "Один раунд правок."
+          "Съёмки и 2, 4 или 6 видео до 30 секунд — по выбранному пакету.",
+          "4, 8 или 12 постов и столько же Stories.",
+          "Тексты на португальском и публикации в Instagram / Facebook.",
+          "Один раунд правок и краткий месячный отчёт."
         ],
-        "price": "400 € / месяц",
-        "priceText": "Первый месяц — платный тест. Детали пакета и IVA согласуем до начала работы.",
+        "price": "От 400 € / месяц",
+        "priceText": "Старт — 400 €, Бизнес — 800 €, Премиум — от 1 200 € в месяц. Объём и условия подтверждаем до начала работы.",
         "faqs": [
           [
             "Реклама входит в пакет?",
@@ -969,8 +1119,8 @@
             "Обработка Direct и обслуживание клиентов не входят в пакет производства и публикации."
           ],
           [
-            "Видео входят в четыре поста?",
-            "Точный подсчёт и распределение публикаций фиксируем в предложении до начала работы."
+            "Видео входят в количество постов?",
+            "Нет. Видео считаются отдельно от постов. Публикация одного материала в Instagram и Facebook не удваивает его количество."
           ],
           [
             "Вы обещаете новых клиентов?",
@@ -1188,6 +1338,81 @@
     "businessLabel": "Ваш бизнес (необязательно)",
     "namePlaceholder": "Как к вам обращаться?",
     "businessPlaceholder": "Например: кафе, студия йоги, бренд одежды",
-    "briefPlaceholder": "Что хотите снять и к какому сроку? Можно коротко."
+    "briefPlaceholder": "Что хотите снять и к какому сроку? Можно коротко.",
+    "recommended": "Рекомендуем",
+    "from": "от",
+    "planLabel": "Пакет",
+    "choosePlan": "Выбрать пакет",
+    "planLabels": [
+      "Съёмки в месяц",
+      "Видео до 30 секунд",
+      "Посты",
+      "Stories"
+    ],
+    "plans": [
+      {
+        "key": "start",
+        "name": "Старт",
+        "price": "400",
+        "subtitle": "Базовое присутствие в соцсетях.",
+        "values": [
+          "1 × до 2 часов",
+          "2",
+          "4",
+          "4"
+        ]
+      },
+      {
+        "key": "business",
+        "name": "Бизнес",
+        "price": "800",
+        "subtitle": "Больше видео и регулярных публикаций.",
+        "values": [
+          "1 × до 4 часов",
+          "4",
+          "8",
+          "8"
+        ]
+      },
+      {
+        "key": "premium",
+        "name": "Премиум",
+        "price": "1200",
+        "subtitle": "Больше съёмок и контента каждый месяц.",
+        "values": [
+          "2 × до 3 часов",
+          "6",
+          "12",
+          "12"
+        ]
+      }
+    ],
+    "sharedTitle": "В каждом пакете",
+    "sharedFeatures": [
+      [
+        "Идеи, съёмка и монтаж",
+        "Планируем содержание, снимаем и готовим материалы."
+      ],
+      [
+        "Тексты и публикации",
+        "Тексты на португальском. Instagram и Facebook."
+      ],
+      [
+        "Правки и отчёт",
+        "Один раунд правок и краткий месячный отчёт."
+      ]
+    ],
+    "countingNote": "Видео считаются отдельно от постов. Материалы готовятся из съёмок пакета. Публикация одного материала в двух сетях не удваивает количество.",
+    "adBudgetTitle": "Рекламный бюджет — отдельно",
+    "adBudgetNote": "Рекламный бюджет не входит в стоимость пакетов и оплачивается отдельно напрямую Meta / Google. Настройка и ведение рекламы также рассчитываются отдельно.",
+    "contentPrice": "От 400 € / месяц",
+    "contentPriceText": "Старт — 400 €, Бизнес — 800 €, Премиум — от 1 200 € в месяц. Объём и условия подтверждаем до начала работы.",
+    "contentOut": [
+      "Съёмки и 2, 4 или 6 видео до 30 секунд — по выбранному пакету.",
+      "4, 8 или 12 постов и столько же Stories.",
+      "Тексты на португальском и публикации в Instagram / Facebook.",
+      "Один раунд правок и краткий месячный отчёт."
+    ],
+    "countAnswer": "Нет. Видео считаются отдельно от постов. Публикация одного материала в Instagram и Facebook не удваивает его количество."
   }
 }
