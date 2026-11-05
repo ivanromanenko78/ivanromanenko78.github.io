@@ -189,8 +189,8 @@ def credits(lang,cur):
 
 def render(lang,key):
  d=DATA[lang];cur=path(lang,key)
- title=d['homeTitle'] if key=='home' else d['services'][key]['title'] if key in d['services'] else d['articles'][int(key.split('-')[1])]['title'] if key.startswith('article-') else {'blog':d['nav'][3]+' — '+d['journalH'].replace('<br>',' '),'contact':d['contactTitle'],'credits':d['creditTitle']}[key]
- desc=d['services'][key]['lead'] if key in d['services'] else d['articles'][int(key.split('-')[1])]['excerpt'] if key.startswith('article-') else d['contactLead'] if key=='contact' else d['homeLead']
+ title={"pt":"Vídeo, publicidade e criação de sites em Lisboa","en":"Video, advertising and web design in Lisbon","ru":"Видео, реклама и создание сайтов в Лиссабоне"}[lang] if key=='home' else d['services'][key]['title'] if key in d['services'] else d['articles'][int(key.split('-')[1])]['title'] if key.startswith('article-') else {'blog':d['nav'][3]+' — '+d['journalH'].replace('<br>',' '),'contact':d['contactTitle'],'credits':d['creditTitle']}[key]
+ desc={"pt":"Produção de vídeo, conteúdos para redes sociais, campanhas digitais e criação de sites para empresas em Lisboa. Veja os serviços e preços da IDea Studio.","en":"Video production, social media content, digital advertising and web design for Lisbon businesses. Explore IDea Studio’s services and prices.","ru":"Видеосъёмка, контент для соцсетей, настройка рекламы и создание сайтов для бизнеса в Лиссабоне. Услуги и цены IDea Studio."}[lang] if key=='home' else d['services'][key]['lead'] if key in d['services'] else d['articles'][int(key.split('-')[1])]['excerpt'] if key.startswith('article-') else d['contactLead'] if key=='contact' else d['homeLead']
  canonical=BASE+cur
  is_article=key.startswith('article-')
  share_image=BASE+'assets/'+(['journal-social.webp','journal-shoot.webp','journal-edit.webp'][int(key.split('-')[1])] if is_article else 'social.jpg')
