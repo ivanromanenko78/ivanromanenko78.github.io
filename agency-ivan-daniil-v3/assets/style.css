@@ -45,3 +45,7 @@
   font-size: 17px;
   line-height: 1.25;
 }
+
+.studio-logo{display:block;width:100%;height:auto}
+.brand{width:clamp(104px,16vw,160px)}
+.footer-wordmark{display:block;width:min(250px,55vw);flex-shrink:0}

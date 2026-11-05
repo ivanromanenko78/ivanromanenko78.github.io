@@ -29,7 +29,7 @@ def btn(text,url,outline=False): return f'<a class="button {"button-outline" if 
 def arrow():return '<span aria-hidden="true">↗</span>'
 
 def motion(d):
-    return '<div class="motion-art" aria-hidden="true"><div class="motion-ring"></div><div class="motion-type">'+''.join(f'<span>{x}</span>' for x in d['motionWords'])+'</div><div class="motion-grid"></div><span class="motion-id">I+D / MOTION STUDY 001</span></div>'
+    return '<div class="motion-art" aria-hidden="true"><div class="motion-ring"></div><div class="motion-type">'+''.join(f'<span>{x}</span>' for x in d['motionWords'])+'</div><div class="motion-grid"></div><span class="motion-id">IDea Studio / MOTION STUDY 001</span></div>'
 
 def media(lang,cur,kind='coffee',hero=False):
     d=DATA[lang];label=d['mediaLabels'][kind]
@@ -42,7 +42,7 @@ def services(lang,cur):
  cards=''
  for i,(key,s) in enumerate(d['services'].items()):
     cards+=f'''<a class="service-row reveal" href="{link(lang,key,cur)}"><span class="mono">0{i+1}</span><h3>{s['name']}</h3><p>{s['intro']}</p><span class="round-arrow" aria-hidden="true">↗</span></a>'''
- return f'<section id="services" class="section paper"><div class="wrap"><div class="section-heading"><div><p class="eyebrow">I+D / {d["nav"][0]}</p><h2>{d["servicesH"]}</h2></div><p>{d["servicesLead"]}</p></div><div class="service-list">{cards}</div></div></section>'
+ return f'<section id="services" class="section paper"><div class="wrap"><div class="section-heading"><div><p class="eyebrow">IDea Studio / {d["nav"][0]}</p><h2>{d["servicesH"]}</h2></div><p>{d["servicesLead"]}</p></div><div class="service-list">{cards}</div></div></section>'
 
 def package(lang,cur):
  d=DATA[lang];cards=''
@@ -63,7 +63,7 @@ def package(lang,cur):
 def process(lang,cur):
  d=DATA[lang]
  items=''.join(f'<li class="reveal"><span class="step-number">0{i+1}</span><h3>{h}</h3><p>{p}</p></li>' for i,(h,p) in enumerate(d['steps']))
- return f'<section class="section process-section"><div class="wrap"><p class="eyebrow">I+D / PROCESS</p><h2>{d["processH"]}</h2><ol class="steps">{items}</ol></div></section>'
+ return f'<section class="section process-section"><div class="wrap"><p class="eyebrow">IDea Studio / PROCESS</p><h2>{d["processH"]}</h2><ol class="steps">{items}</ol></div></section>'
 
 def ideas(lang,cur):
  d=DATA[lang]; contents=[media(lang,cur),media(lang,cur,'barber'),motion(d)]
@@ -72,7 +72,7 @@ def ideas(lang,cur):
 
 def team(lang,cur):
  d=DATA[lang]
- return f'''<section id="studio" class="section paper"><div class="wrap team-layout"><div><p class="eyebrow">IVAN & DANIIL</p><h2>{d['teamH']}</h2><p class="team-note">{d['teamNote']}</p></div><div class="team-people"><article class="person reveal"><span class="person-initial" aria-hidden="true">IR</span><div><h3>Ivan Romanenko</h3><span class="role">{d['ivanRole']}</span><p>{d['ivanText']}</p></div></article><article class="person reveal"><span class="person-initial" aria-hidden="true">D</span><div><h3>Daniil</h3><span class="role">{d['daniilRole']}</span><p>{d['daniilText']}</p></div></article></div></div></section>'''
+ return f'''<section id="studio" class="section paper"><div class="wrap team-layout"><div><p class="eyebrow">IDea Studio</p><h2>{d['teamH']}</h2><p class="team-note">{d['teamNote']}</p></div><div class="team-people"><article class="person reveal"><span class="person-initial" aria-hidden="true">IR</span><div><h3>Ivan Romanenko</h3><span class="role">{d['ivanRole']}</span><p>{d['ivanText']}</p></div></article><article class="person reveal"><span class="person-initial" aria-hidden="true">D</span><div><h3>Daniil</h3><span class="role">{d['daniilRole']}</span><p>{d['daniilText']}</p></div></article></div></div></section>'''
 
 def journal(lang,cur,full=False):
  d=DATA[lang]
@@ -90,7 +90,7 @@ def faq(lang,items):
 
 def cta(lang,cur):
  d=DATA[lang]
- return f'<section class="contact-band"><div class="wrap"><p class="eyebrow">I+D / NEXT FRAME</p><div><h2>{d["contactH"]}</h2>{btn(d["talk"],link(lang,"contact",cur))}</div></div></section>'
+ return f'<section class="contact-band"><div class="wrap"><p class="eyebrow">IDea Studio / NEXT FRAME</p><div><h2>{d["contactH"]}</h2>{btn(d["talk"],link(lang,"contact",cur))}</div></div></section>'
 
 def home(lang,cur):
  d=DATA[lang]
@@ -100,11 +100,11 @@ def service_page(lang,key,cur):
  d=DATA[lang];s=d['services'][key]
  visual=motion(d) if key=='motion' else media(lang,cur,{'content':'content','reels':'reels','video':'camera'}[key])
  who=''.join(f'<li>{x}</li>' for x in s['who']); out=''.join(f'<li>{x}</li>' for x in s['out'])
- return f'''<section class="service-hero wrap"><div><p class="eyebrow">{s['tag']} · LISBOA</p><h1>{s['h']}</h1><p class="lead">{s['lead']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="service-seo-label mono">{s['title']}</p></div><div class="service-visual">{visual}</div></section><section class="section paper"><div class="wrap"><div class="section-heading"><h2>{d['forWho']}</h2><p>{s['intro']}</p></div><ul class="who-grid">{who}</ul></div></section><section class="section"><div class="wrap delivery-layout"><div><p class="eyebrow">I+D / OUTPUT</p><h2>{d['deliver']}</h2><ul class="check-list">{out}</ul></div><aside class="scope-panel"><p class="eyebrow">{d['scope']}</p><h3>{s['price']}</h3><p>{s['priceText']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="fineprint">{d['terms']}</p></aside></div></section>'''+(package(lang,cur) if key=='content' else '')+process(lang,cur)+faq(lang,s['faqs'])+f'<section class="section paper"><div class="wrap"><p class="eyebrow">{d["related"]}</p><div class="related-services">'+''.join(f'<a href="{link(lang,k,cur)}">{ss["name"]} ↗</a>' for k,ss in d['services'].items() if k!=key)+'</div></div></section>'+cta(lang,cur)
+ return f'''<section class="service-hero wrap"><div><p class="eyebrow">{s['tag']} · LISBOA</p><h1>{s['h']}</h1><p class="lead">{s['lead']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="service-seo-label mono">{s['title']}</p></div><div class="service-visual">{visual}</div></section><section class="section paper"><div class="wrap"><div class="section-heading"><h2>{d['forWho']}</h2><p>{s['intro']}</p></div><ul class="who-grid">{who}</ul></div></section><section class="section"><div class="wrap delivery-layout"><div><p class="eyebrow">IDea Studio / OUTPUT</p><h2>{d['deliver']}</h2><ul class="check-list">{out}</ul></div><aside class="scope-panel"><p class="eyebrow">{d['scope']}</p><h3>{s['price']}</h3><p>{s['priceText']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="fineprint">{d['terms']}</p></aside></div></section>'''+(package(lang,cur) if key=='content' else '')+process(lang,cur)+faq(lang,s['faqs'])+f'<section class="section paper"><div class="wrap"><p class="eyebrow">{d["related"]}</p><div class="related-services">'+''.join(f'<a href="{link(lang,k,cur)}">{ss["name"]} ↗</a>' for k,ss in d['services'].items() if k!=key)+'</div></div></section>'+cta(lang,cur)
 
 def contact(lang,cur):
  d=DATA[lang]
- return f'''<section class="section wrap contact-layout"><div><p class="eyebrow">I+D / CONTACT</p><h1>{d['contactH']}</h1><p class="lead">{d['contactLead']}</p><a class="contact-phone" href="tel:+{PHONE}">+351 967 901 942</a><a class="text-link" href="https://wa.me/{PHONE}">WhatsApp ↗</a><p class="fineprint">Lisboa, Portugal · PT / EN / RU</p></div><div class="form-panel"><form id="brief-form" action="https://wa.me/{PHONE}" method="get"><label for="brief-name">{d['name']}</label><input id="brief-name" autocomplete="name" maxlength="120" placeholder="{esc(d['namePlaceholder'])}" required><label for="brief-business">{d['businessLabel']}</label><input id="brief-business" autocomplete="organization" maxlength="160" placeholder="{esc(d['businessPlaceholder'])}"><label for="brief-task">{d['brief']}</label><textarea id="brief-task" rows="5" maxlength="1800" placeholder="{esc(d['briefPlaceholder'])}" required></textarea><input type="hidden" name="text" id="whatsapp-text" value="{esc(d['message'])}"><button class="button" type="submit">{d['send']} <span aria-hidden="true">↗</span></button><p class="fineprint">{d['formNote']}</p></form></div></section>'''
+ return f'''<section class="section wrap contact-layout"><div><p class="eyebrow">IDea Studio / CONTACT</p><h1>{d['contactH']}</h1><p class="lead">{d['contactLead']}</p><a class="contact-phone" href="tel:+{PHONE}">+351 967 901 942</a><a class="text-link" href="https://wa.me/{PHONE}">WhatsApp ↗</a><p class="fineprint">Lisboa, Portugal · PT / EN / RU</p></div><div class="form-panel"><form id="brief-form" action="https://wa.me/{PHONE}" method="get"><label for="brief-name">{d['name']}</label><input id="brief-name" autocomplete="name" maxlength="120" placeholder="{esc(d['namePlaceholder'])}" required><label for="brief-business">{d['businessLabel']}</label><input id="brief-business" autocomplete="organization" maxlength="160" placeholder="{esc(d['businessPlaceholder'])}"><label for="brief-task">{d['brief']}</label><textarea id="brief-task" rows="5" maxlength="1800" placeholder="{esc(d['briefPlaceholder'])}" required></textarea><input type="hidden" name="text" id="whatsapp-text" value="{esc(d['message'])}"><button class="button" type="submit">{d['send']} <span aria-hidden="true">↗</span></button><p class="fineprint">{d['formNote']}</p></form></div></section>'''
 
 def article(lang,idx,cur):
  d=DATA[lang]; ar=d['articles'][idx]
@@ -116,7 +116,7 @@ def credits(lang,cur):
  d=DATA[lang]
  sources=[('Mixkit', 'Film production — 44069', 'https://mixkit.co/free-stock-video/young-man-recording-with-a-camera-on-a-set-44069/'), ('Mixkit', 'Barber — 43241', 'https://mixkit.co/free-stock-video/barber-begins-to-cut-the-hair-of-his-client-43241/'), ('Mixkit', 'Coffee — 41860', 'https://mixkit.co/free-stock-video/employee-serving-a-cup-of-coffee-from-a-machine-41860/'), ('Pexels / Amar Preciado', 'Product shoot — 7112246', 'https://www.pexels.com/video/a-videographer-holding-a-camera-7112246/'), ('Pexels / cottonbro studio', 'Social media — 5081926', 'https://www.pexels.com/photo/person-using-a-smartphone-5081926/'), ('Pexels / The Lazy Artist Gallery', 'Camera equipment — 4164088', 'https://www.pexels.com/photo/digital-camera-with-different-lenses-on-table-4164088/'), ('Pexels / Amar Preciado', 'Editing — 11025648', 'https://www.pexels.com/photo/a-laptop-near-the-computer-set-on-the-table-11025648/'), ('Pexels / Hanna Pad', 'Brand content — 12433033', 'https://www.pexels.com/photo/a-woman-being-recorded-on-a-camera-12433033/'), ('Pexels / Alan Quirván', 'Recording — 14540964', 'https://www.pexels.com/photo/woman-during-recording-14540964/')]
  items=''.join(f'<li><a href="{url}">{label} ↗</a><br><small>{author}</small></li>' for author,label,url in sources)
- return f'''<section class="section wrap legal"><p class="eyebrow">I+D / INFO</p><h1>{d['creditTitle']}</h1><p class="lead">{d['creditText']}</p><ul class="media-credits">{items}</ul><p><a href="https://mixkit.co/license/#videoFree">Mixkit License ↗</a> · <a href="https://www.pexels.com/license/">Pexels License ↗</a></p><h2>{d['credits']}</h2><p>{d['privacyText']}</p><a href="tel:+{PHONE}">+351 967 901 942</a></section>'''
+ return f'''<section class="section wrap legal"><p class="eyebrow">IDea Studio / INFO</p><h1>{d['creditTitle']}</h1><p class="lead">{d['creditText']}</p><ul class="media-credits">{items}</ul><p><a href="https://mixkit.co/license/#videoFree">Mixkit License ↗</a> · <a href="https://www.pexels.com/license/">Pexels License ↗</a></p><h2>{d['credits']}</h2><p>{d['privacyText']}</p><a href="tel:+{PHONE}">+351 967 901 942</a></section>'''
 
 def render(lang,key):
  d=DATA[lang];cur=path(lang,key)
@@ -127,7 +127,7 @@ def render(lang,key):
  share_image=BASE+'assets/'+(['journal-social.webp','journal-shoot.webp','journal-edit.webp'][int(key.split('-')[1])] if is_article else 'social.jpg')
  share_type='image/webp' if is_article else 'image/jpeg'
  share_height='750' if is_article else '630' 
- head=f'''<!doctype html><html lang="{d['lang']}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{esc(title)} | Ivan &amp; Daniil</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#111411"><link rel="canonical" href="{canonical}"><link rel="icon" href="{asset(cur,'icon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="{asset(cur,'style.css')}?v={CSS_REV}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}"><meta property="og:type" content="{'article' if key.startswith('article-') else 'website'}"><meta property="og:url" content="{canonical}"><meta property="og:site_name" content="Ivan &amp; Daniil"><meta property="og:image" content="{share_image}"><meta name="twitter:card" content="summary_large_image">'''
+ head=f'''<!doctype html><html lang="{d['lang']}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{esc(title)} | IDea Studio</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#111411"><link rel="canonical" href="{canonical}"><link rel="icon" href="{asset(cur,'icon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="{asset(cur,'style.css')}?v={CSS_REV}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}"><meta property="og:type" content="{'article' if key.startswith('article-') else 'website'}"><meta property="og:url" content="{canonical}"><meta property="og:site_name" content="IDea Studio"><meta property="og:image" content="{share_image}"><meta name="twitter:card" content="summary_large_image">'''
  locales={'pt':'pt_PT','en':'en_GB','ru':'ru_RU'}
  head+=f'<meta property="og:locale" content="{locales[lang]}"><meta property="og:image:type" content="{share_type}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="{share_height}"><meta property="og:image:alt" content="{esc(d['homeTitle'])}"><meta name="twitter:title" content="{esc(title)}"><meta name="twitter:description" content="{esc(desc)}"><meta name="twitter:image" content="{share_image}"><meta name="twitter:image:alt" content="{esc(d['homeTitle'])}">'
  for lng in DATA:
@@ -135,8 +135,8 @@ def render(lang,key):
   if lng!=lang: head+=f'<meta property="og:locale:alternate" content="{locales[lng]}">'
 
  head+=f'<link rel="alternate" hreflang="x-default" href="{aurl("pt",key)}">'
- org={'@type':'Organization','@id':BASE+'#studio','name':'Ivan & Daniil','url':BASE,'telephone':'+351967901942','areaServed':{'@type':'City','name':'Lisboa'}}
- graph=[org,{'@type':('ContactPage' if key=='contact' else 'CollectionPage' if key=='blog' else 'WebPage'),'@id':canonical+'#page','url':canonical,'name':title,'description':desc,'inLanguage':d['lang'],'isPartOf':{'@id':BASE+'#website'}},{'@type':'WebSite','@id':BASE+'#website','name':'Ivan & Daniil','url':BASE}]
+ org={'@type':'Organization','@id':BASE+'#studio','name':'IDea Studio','url':BASE,'telephone':'+351967901942','areaServed':{'@type':'City','name':'Lisboa'}}
+ graph=[org,{'@type':('ContactPage' if key=='contact' else 'CollectionPage' if key=='blog' else 'WebPage'),'@id':canonical+'#page','url':canonical,'name':title,'description':desc,'inLanguage':d['lang'],'isPartOf':{'@id':BASE+'#website'}},{'@type':'WebSite','@id':BASE+'#website','name':'IDea Studio','url':BASE}]
  if key in d['services']: graph.append({'@type':'Service','name':title,'description':desc,'url':canonical,'provider':{'@id':BASE+'#studio'},'areaServed':{'@type':'City','name':'Lisboa'}})
  if key in ['home','content']:
   offers=[]
@@ -147,20 +147,20 @@ def render(lang,key):
    offers.append(offer)
   graph.append({'@type':'OfferCatalog','@id':aurl(lang,'content')+'#packages','name':d['monthly'],'itemListElement':offers})
  if key.startswith('article-'):graph.append({'@type':'BlogPosting','headline':title,'description':desc,'datePublished':'2026-11-04','dateModified':'2026-11-04','author':{'@id':BASE+'#studio'},'publisher':{'@id':BASE+'#studio'},'mainEntityOfPage':canonical,'image':share_image,'inLanguage':d['lang']})
- if key!='home':graph.append({'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':1,'name':'Ivan & Daniil','item':aurl(lang,'home')},{'@type':'ListItem','position':2,'name':title,'item':canonical}]})
+ if key!='home':graph.append({'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':1,'name':'IDea Studio','item':aurl(lang,'home')},{'@type':'ListItem','position':2,'name':title,'item':canonical}]})
  head+='<script type="application/ld+json">'+json.dumps({'@context':'https://schema.org','@graph':graph},ensure_ascii=False).replace('</',r'<\/')+'</script></head>'
  nav=f'''<a href="{link(lang,'home',cur,'#services')}">{d['nav'][0]}</a><a href="{link(lang,'content',cur,'#package')}">{d['nav'][1]}</a><a href="{link(lang,'home',cur,'#studio')}">{d['nav'][2]}</a><a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a>'''
  language_names={'pt':'Português','en':'English','ru':'Русский'}
  language_label={'pt':'Idioma','en':'Language','ru':'Язык'}[lang]
  langs=''.join(f'<a href="{rel(cur,path(lng,key))}" lang="{DATA[lng]["lang"]}" hreflang="{DATA[lng]["lang"]}" aria-label="{language_names[lng]}" {"aria-current=page" if lng==lang else ""}>{language_names[lng]}</a>' for lng in DATA)
- header=f'''<body><a href="#main" class="skip-link">{d['skip']}</a><header class="site-header"><div class="wrap header-inner"><a href="{link(lang,'home',cur)}" class="brand" aria-label="Ivan and Daniil"><span class="brand-mark">i<span>+</span>d</span><span class="brand-name">IVAN & DANIIL<small>INDEPENDENT CREATIVE STUDIO</small></span></a><nav class="desktop-nav" aria-label="{d['menu']}">{nav}</nav><div class="header-actions"><nav class="languages" aria-label="{language_label}">{langs}</nav><a class="header-contact" href="{link(lang,'contact',cur)}">{d['talk']} ↗</a><button id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">{d['menu']} <span>+</span></button></div></div><div class="mobile-language-bar wrap"><span class="language-label">{language_label}</span><nav class="languages" aria-label="{language_label}">{langs}</nav></div><nav id="mobile-menu" class="mobile-menu wrap" aria-label="{d['menu']}" hidden>{nav}<a href="{link(lang,'contact',cur)}">{d['talk']} ↗</a></nav></header>'''
+ header=f'''<body><a href="#main" class="skip-link">{d['skip']}</a><header class="site-header"><div class="wrap header-inner"><a href="{link(lang,'home',cur)}" class="brand"><img class="studio-logo" src="{asset(cur,'idea-studio-logo.png')}" alt="IDea Studio — Agência Criativa" lang="pt-PT" width="600" height="157"></a><nav class="desktop-nav" aria-label="{d['menu']}">{nav}</nav><div class="header-actions"><nav class="languages" aria-label="{language_label}">{langs}</nav><a class="header-contact" href="{link(lang,'contact',cur)}">{d['talk']} ↗</a><button id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">{d['menu']} <span>+</span></button></div></div><div class="mobile-language-bar wrap"><span class="language-label">{language_label}</span><nav class="languages" aria-label="{language_label}">{langs}</nav></div><nav id="mobile-menu" class="mobile-menu wrap" aria-label="{d['menu']}" hidden>{nav}<a href="{link(lang,'contact',cur)}">{d['talk']} ↗</a></nav></header>'''
  if key=='home': body=home(lang,cur)
  elif key in d['services']: body=service_page(lang,key,cur)
- elif key=='blog': body=f'<section class="journal-hero wrap"><p class="eyebrow">I+D / JOURNAL</p><h1>{d["journalH"]}</h1><p class="lead">{d["articles"][0]["excerpt"]}</p></section>'+journal(lang,cur,True)+cta(lang,cur)
+ elif key=='blog': body=f'<section class="journal-hero wrap"><p class="eyebrow">IDea Studio / JOURNAL</p><h1>{d["journalH"]}</h1><p class="lead">{d["articles"][0]["excerpt"]}</p></section>'+journal(lang,cur,True)+cta(lang,cur)
  elif key=='contact': body=contact(lang,cur)
  elif key=='credits':body=credits(lang,cur)
  else:body=article(lang,int(key.split('-')[1]),cur)
- footer=f'''<footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="footer-wordmark" href="{link(lang,'home',cur)}">IVAN<span>+</span>DANIIL</a><p>{d['footerLine']}<br>Lisboa, Portugal</p></div><div class="footer-links">{''.join(f'<a href="{link(lang,k,cur)}">{s["name"]}</a>' for k,s in d['services'].items())}<a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a></div><div class="footer-bottom"><span>© 2026 IVAN & DANIIL</span><a href="tel:+{PHONE}">+351 967 901 942</a><a href="{link(lang,'credits',cur)}">{d['credits']}</a><a href="#main" aria-label="Top">↑</a></div></div></footer>'''
+ footer=f'''<footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="footer-wordmark" href="{link(lang,'home',cur)}"><img class="studio-logo" src="{asset(cur,'idea-studio-logo.png')}" alt="IDea Studio — Agência Criativa" lang="pt-PT" width="600" height="157"></a><p>{d['footerLine']}<br>Lisboa, Portugal</p></div><div class="footer-links">{''.join(f'<a href="{link(lang,k,cur)}">{s["name"]}</a>' for k,s in d['services'].items())}<a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a></div><div class="footer-bottom"><span>© 2026 IDea Studio</span><a href="tel:+{PHONE}">+351 967 901 942</a><a href="{link(lang,'credits',cur)}">{d['credits']}</a><a href="#main" aria-label="Top">↑</a></div></div></footer>'''
  locale={k:d[k] for k in ['message','name','business','service','brief','menu','close','planLabel']}
  locale['serviceNames']={k:v['name'] for k,v in d['services'].items()}
  locale['planNames']={v['key']:v['name'] for v in d['plans']}
