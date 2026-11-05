@@ -51,7 +51,7 @@ def package(lang,cur):
   badge=f'<span class="tier-badge">{d["recommended"]}</span>' if recommended else '<span class="tier-badge tier-badge-empty" aria-hidden="true">&nbsp;</span>'
   rows=''.join(f'<div><dt>{label}</dt><dd>{value}</dd></div>' for label,value in zip(d['planLabels'],plan['values']))
   prefix=f'<span class="tier-from">{d["from"]}</span>' if plan['key']=='premium' else ''
-  price='1 200' if plan['key']=='premium' else plan['price']
+  price=f"{int(plan['price']):,}".replace(',', ' ')
   bonus=''
   if plan.get('bonus'):
    label, description=plan['bonus']
@@ -94,7 +94,7 @@ def cta(lang,cur):
 
 def home(lang,cur):
  d=DATA[lang]
- return f'''<section class="hero wrap"><div class="hero-heading"><div><p class="eyebrow"><i></i>{d['eyebrow']}</p><h1>{d['homeH']}</h1></div><div class="hero-aside"><p class="lead">{d['homeLead']}</p><div class="hero-actions">{btn(d['cta'],link(lang,'contact',cur))}<a class="text-link" href="#package">400 € {d['month']} ↓</a></div></div></div>{media(lang,cur,'hero',True)}<div class="hero-caption mono"><span>{d['homeTitle']}</span><span>FILM / EDIT / MOTION / SOCIAL</span></div></section>'''+services(lang,cur)+package(lang,cur)+ideas(lang,cur)+process(lang,cur)+team(lang,cur)+journal(lang,cur)+faq(lang,d['services']['content']['faqs'])+cta(lang,cur)
+ return f'''<section class="hero wrap"><div class="hero-heading"><div><p class="eyebrow"><i></i>{d['eyebrow']}</p><h1>{d['homeH']}</h1></div><div class="hero-aside"><p class="lead">{d['homeLead']}</p><div class="hero-actions">{btn(d['cta'],link(lang,'contact',cur))}<a class="text-link" href="#package">{d["plans"][0]["price"]} € {d['month']} ↓</a></div></div></div>{media(lang,cur,'hero',True)}<div class="hero-caption mono"><span>{d['homeTitle']}</span><span>FILM / EDIT / MOTION / SOCIAL</span></div></section>'''+services(lang,cur)+package(lang,cur)+ideas(lang,cur)+process(lang,cur)+team(lang,cur)+journal(lang,cur)+faq(lang,d['services']['content']['faqs'])+cta(lang,cur)
 
 def service_page(lang,key,cur):
  d=DATA[lang];s=d['services'][key]
@@ -110,7 +110,7 @@ def article(lang,idx,cur):
  d=DATA[lang]; ar=d['articles'][idx]
  toc=''.join(f'<a href="#part-{i}"><span>0{i+1}</span>{h}</a>' for i,(h,p) in enumerate(ar['sections']))
  body=''.join(f'<section id="part-{i}"><h2>{h}</h2><p>{p}</p></section>' for i,(h,p) in enumerate(ar['sections']))
- return f'''<header class="article-heading wrap"><a class="text-link" href="{link(lang,'blog',cur)}">← {d['back']}</a><p class="eyebrow">{ar['category']} / JOURNAL</p><h1>{ar['title']}</h1><p class="lead">{ar['excerpt']}</p><p class="mono">{d['author']} · 04.11.2026 · 3 {d['minutes']}</p></header><figure class="article-cover wrap"><img src="{asset(cur,['journal-social.webp','journal-shoot.webp','journal-edit.webp'][idx])}" width="1200" height="750" alt="{esc(d['journalAlt'][idx])}"></figure><div class="article-body wrap"><nav class="toc" aria-label="{d['nav'][3]}">{toc}</nav><article class="prose">{body}<aside class="article-offer"><h2>{d['monthly']}</h2><p>400 € {d['month']} · {d['trial']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service=content')}</aside><p><a class="text-link" href="{link(lang,'content',cur)}">{d['services']['content']['name']} ↗</a><br><a class="text-link" href="{link(lang,'video',cur)}">{d['services']['video']['name']} ↗</a></p></article></div>'''+journal(lang,cur)+cta(lang,cur)
+ return f'''<header class="article-heading wrap"><a class="text-link" href="{link(lang,'blog',cur)}">← {d['back']}</a><p class="eyebrow">{ar['category']} / JOURNAL</p><h1>{ar['title']}</h1><p class="lead">{ar['excerpt']}</p><p class="mono">{d['author']} · 04.11.2026 · 3 {d['minutes']}</p></header><figure class="article-cover wrap"><img src="{asset(cur,['journal-social.webp','journal-shoot.webp','journal-edit.webp'][idx])}" width="1200" height="750" alt="{esc(d['journalAlt'][idx])}"></figure><div class="article-body wrap"><nav class="toc" aria-label="{d['nav'][3]}">{toc}</nav><article class="prose">{body}<aside class="article-offer"><h2>{d['monthly']}</h2><p>{d["plans"][0]["price"]} € {d['month']} · {d['trial']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service=content')}</aside><p><a class="text-link" href="{link(lang,'content',cur)}">{d['services']['content']['name']} ↗</a><br><a class="text-link" href="{link(lang,'video',cur)}">{d['services']['video']['name']} ↗</a></p></article></div>'''+journal(lang,cur)+cta(lang,cur)
 
 def credits(lang,cur):
  d=DATA[lang]

@@ -6,7 +6,7 @@ A separate multipage website at `/agency-ivan-daniil-v3/`. Existing variants rem
 
 33 fully rendered HTML pages: home, four service landing pages, contact, Journal index, three articles, and media/privacy credits, each in Portuguese, English and Russian. Main language is Portuguese; Russian starts at `ru/index.html`, English at `en/index.html`.
 
-Content follows the project brief dated 29 October 2026: €400/month, 1 visit up to 2h, 2 videos up to 30s, 4 posts, 4 Stories, Portuguese copy, Instagram/Facebook publishing, one revision round, brief report. Advertising is separate. Counting of publications, VAT, travel, timelines and payment are confirmed in a written proposal. No invented clients, testimonials or performance claims.
+Content follows the project brief dated 29 October 2026: an initial €400/month, 1 visit up to 2h, 2 videos up to 30s, 4 posts, 4 Stories, Portuguese copy, Instagram/Facebook publishing, one revision round, brief report. See the current package prices and the Premium advertising bonus below. Counting of publications, VAT, travel, timelines and payment are confirmed in a written proposal. No invented clients, testimonials or performance claims.
 
 ## Editing
 
@@ -47,7 +47,7 @@ Optional business context update: added a clearly optional business field and de
 
 ## Approved monthly packages
 
-Start €400: 1 shoot up to 2h, 2 videos up to 30s, 4 posts, 4 Stories. Business €800 (recommended): 1 shoot up to 4h, 4 videos, 8 posts, 8 Stories. Premium from €1,200: 2 shoots up to 3h each, 6 videos, 12 posts, 12 Stories. Video duration is up to 30 seconds in all packages. All include ideas, planning, editing, Portuguese copy, Instagram/Facebook publishing, one revision round and a brief monthly report. Videos are additional to posts; cross-posting does not double quantities. Advertising spend is separate and paid directly to Meta/Google; advertising setup and management are also quoted separately. Travel, timelines, payment and VAT are agreed before starting. Selected package is retained in the WhatsApp brief.
+Start €399: 1 shoot up to 2h, 2 videos up to 30s, 4 posts, 4 Stories. Business €799 (recommended): 1 shoot up to 4h, 4 videos, 8 posts, 8 Stories. Premium from €1,199: 2 shoots up to 3h each, 6 videos, 12 posts, 12 Stories. Video duration is up to 30 seconds in all packages. All include ideas, planning, editing, Portuguese copy, Instagram/Facebook publishing, one revision round and a brief monthly report. Videos are additional to posts; cross-posting does not double quantities. Advertising spend is separate and paid directly to Meta/Google; Premium includes Facebook ad setup and a test launch for one hypothesis. Setup outside that bonus and ongoing campaign management are quoted separately. Travel, timelines, payment and VAT are agreed before starting. Selected package is retained in the WhatsApp brief.
 
 ## Varied media update
 
