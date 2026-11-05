@@ -92,9 +92,73 @@ def cta(lang,cur):
  d=DATA[lang]
  return f'<section class="contact-band"><div class="wrap"><p class="eyebrow">IDea Studio / NEXT FRAME</p><div><h2>{d["contactH"]}</h2>{btn(d["talk"],link(lang,"contact",cur))}</div></div></section>'
 
+HOME_SERVICE_COPY={
+ "pt": [
+  "Escolher serviço",
+  "Ver preços",
+  "Ajudamos empresas em Lisboa com produção de vídeo, conteúdo para redes sociais, publicidade digital e criação de sites.",
+  [
+   [
+    "Vídeo e conteúdo",
+    "Filmagem, Reels e publicações para redes sociais."
+   ],
+   [
+    "Publicidade",
+    "Configuração e gestão de campanhas digitais."
+   ],
+   [
+    "Criação de sites",
+    "Landing pages e sites para empresas."
+   ]
+  ]
+ ],
+ "en": [
+  "Choose a service",
+  "View prices",
+  "We help Lisbon businesses with video production, social content, digital advertising and web design.",
+  [
+   [
+    "Video and content",
+    "Filming, Reels and posts for social media."
+   ],
+   [
+    "Advertising",
+    "Digital campaign setup and management."
+   ],
+   [
+    "Web design",
+    "Landing pages and business websites."
+   ]
+  ]
+ ],
+ "ru": [
+  "Выбрать услугу",
+  "Смотреть цены",
+  "Помогаем бизнесу в Лиссабоне с видео, контентом для соцсетей, рекламой и созданием сайтов.",
+  [
+   [
+    "Видео и контент",
+    "Съёмка, Reels и публикации для соцсетей."
+   ],
+   [
+    "Реклама",
+    "Настройка и ведение рекламных кампаний."
+   ],
+   [
+    "Создание сайтов",
+    "Лендинги и сайты для бизнеса."
+   ]
+  ]
+ ]
+}
+
 def home(lang,cur):
  d=DATA[lang]
- return f'''<section class="hero wrap"><div class="hero-heading"><div><p class="eyebrow"><i></i>{d['eyebrow']}</p><h1>{d['homeH']}</h1></div><div class="hero-aside"><p class="lead">{d['homeLead']}</p><div class="hero-actions">{btn(d['cta'],link(lang,'contact',cur))}<a class="text-link" href="#package">{d["plans"][0]["price"]} € {d['month']} ↓</a></div></div></div>{media(lang,cur,'hero',True)}<div class="hero-caption mono"><span>{d['homeTitle']}</span><span>FILM / EDIT / MOTION / SOCIAL</span></div></section>'''+services(lang,cur)+package(lang,cur)+ideas(lang,cur)+process(lang,cur)+team(lang,cur)+journal(lang,cur)+faq(lang,d['services']['content']['faqs'])+cta(lang,cur)
+ label,price_label,lead,cards=HOME_SERVICE_COPY[lang]
+ urls=('#package',rel(cur,'publicidade')+'/?lang='+lang+'#ads','sites/#packages')
+ cards_html=''.join(f'<a class="hero-service" href="{url}"><strong>{name}</strong><span>{description}</span><span class="hero-service-prices">{price_label} ↗</span></a>' for (name,description),url in zip(cards,urls))
+ service_nav=f'<nav class="hero-services" aria-label="{label}">{cards_html}</nav>'
+ return f'''<section class="hero wrap"><div class="hero-heading"><div><p class="eyebrow"><i></i>{d['eyebrow']}</p><h1>{d['homeH']}</h1></div><div class="hero-aside"><p class="lead">{lead}</p><div class="hero-actions">{btn(d['cta'],link(lang,'contact',cur))}<a class="text-link" href="#package">{d["plans"][0]["price"]} € {d['month']} ↓</a></div></div></div>{service_nav}{media(lang,cur,'hero',True)}<div class="hero-caption mono"><span>{d['homeTitle']}</span><span>FILM / EDIT / MOTION / SOCIAL</span></div></section>'''+services(lang,cur)+package(lang,cur)+ideas(lang,cur)+process(lang,cur)+team(lang,cur)+journal(lang,cur)+faq(lang,d['services']['content']['faqs'])+cta(lang,cur)
 
 def service_page(lang,key,cur):
  d=DATA[lang];s=d['services'][key]
@@ -178,7 +242,7 @@ def render(lang,key):
  locale={k:d[k] for k in ['message','name','business','service','brief','menu','close','planLabel']}
  locale['serviceNames']={k:v['name'] for k,v in d['services'].items()}
  locale['planNames']={v['key']:v['name'] for v in d['plans']}
- result=head+header+'<main id="main">'+body+'</main>'+footer+'<script id="locale" type="application/json">'+json.dumps(locale,ensure_ascii=False)+'</script>'+f'<script defer src="{asset(cur,"app.js")}?v={JS_REV}"></script></body></html>'
+ result=head+("<style>.hero-services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 24px}.hero-service{display:grid;align-content:start;gap:5px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--dark)}.hero-service strong{font-size:17px}.hero-service span{font-size:13px;color:var(--muted)}.hero-service .hero-service-prices{color:var(--lime);font-weight:bold}.hero-service:hover{border-color:var(--lime)}@media(max-width:600px){.hero-services{grid-template-columns:1fr;gap:8px}.hero-service{grid-template-columns:1fr auto;align-items:center;padding:10px 12px}.hero-service strong{font-size:15px}.hero-service .hero-service-prices{grid-column:2;grid-row:1 / span 2;max-width:100px;text-align:right}}</style>" if key=='home' else '')+header+'<main id="main">'+body+'</main>'+footer+'<script id="locale" type="application/json">'+json.dumps(locale,ensure_ascii=False)+'</script>'+f'<script defer src="{asset(cur,"app.js")}?v={JS_REV}"></script></body></html>'
  target=ROOT/cur;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(result)
  return canonical
 
