@@ -26,9 +26,9 @@ header{border-bottom:1px solid var(--line)}header .wrap,footer .wrap{display:fle
 @media(max-width:760px){.hero,.split,.grid{grid-template-columns:1fr}.hero{padding-top:38px}.steps{grid-template-columns:1fr 1fr}.art{min-height:0}.art svg{max-height:300px}.section{padding:35px 0}.contact{padding:20px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
-<meta property="og:image" content="https://ivanromanenko78.github.io/agency-ivan-daniil-v3/assets/social.jpg"><meta name="twitter:card" content="summary_large_image"></head>
+<meta property="og:image" content="https://ivanromanenko78.github.io/agency-ivan-daniil-v3/assets/social.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/png" sizes="32x32" href="../assets/icon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png"></head>
 <body>
-<header><div class="wrap"><a href="../" id="agencyHome" class="brand"><img src="../assets/idea-studio-logo.png" alt="IDea Studio — Agência Criativa" width="600" height="157"></a><div class="header-links"><a id="homeLink" href="../">← Início</a><a id="sitesLink" href="../sites/">Criação de sites</a><div class="lang" aria-label="Idioma / Language / Язык"><button type="button" data-lang="pt">PT</button><button type="button" data-lang="en">EN</button><button type="button" data-lang="ru">RU</button></div></div></div></header>
+<header><div class="wrap"><a href="../" id="agencyHome" class="brand" aria-label="IDea Studio — Início"><img src="../assets/idea-studio-logo.png" alt="IDea Studio — Agência Criativa" width="600" height="157"></a><div class="header-links"><a id="homeLink" href="../">← Início</a><a id="sitesLink" href="../sites/">Criação de sites</a><div class="lang" aria-label="Idioma / Language / Язык"><button type="button" data-lang="pt">PT</button><button type="button" data-lang="en">EN</button><button type="button" data-lang="ru">RU</button></div></div></div></header>
 <main class="wrap" id="top">
 <section class="hero">
 <div><div class="eyebrow" id="tag">Lisboa / Marketing digital</div><h1 id="headline">Publicidade digital e gestão de redes sociais em Lisboa</h1><p id="lead">Ajudamos negócios em Lisboa a lançar campanhas e a manter as suas redes sociais ativas.</p><div class="actions"><a class="btn" href="#ads" id="browse">Ver pacotes ↓</a><a class="btn light" href="https://wa.me/351967901942">WhatsApp ↗</a></div></div>
@@ -40,7 +40,7 @@ header{border-bottom:1px solid var(--line)}header .wrap,footer .wrap{display:fle
 <section class="section"><h2 id="process">Como trabalhamos</h2><ol class="steps" id="steps"><li>Definimos o objetivo</li><li>Escolhemos canais e orçamento</li><li>Preparamos os materiais</li><li>Lançamos a campanha</li><li>Partilhamos os resultados</li></ol></section>
 <section class="section" id="contact"><div class="contact split"><div><h2 id="contactTitle">Vamos falar do seu negócio?</h2><p class="intro" id="contactIntro">Preencha o formulário para abrir uma mensagem no WhatsApp. Pode revê-la antes de enviar.</p><a href="https://wa.me/351967901942">WhatsApp · +351 967 901 942 ↗</a></div>
 <form id="brief"><label><span id="serviceLabel">Serviço</span><select id="service"></select></label><label><span id="nameLabel">Nome</span><input id="name" required maxlength="100" autocomplete="name"></label><label><span id="businessLabel">O seu negócio (opcional)</span><input id="business" maxlength="120" autocomplete="organization"></label><label><span id="replyLabel">Outro contacto (opcional)</span><input id="reply" maxlength="120"></label><button class="btn lime" id="submit" type="submit"></button></form></div></section>
-</main><footer><div class="wrap"><span>IDea Studio · Agência Criativa</span><span>Lisboa · Portugal</span></div></footer>
+</main><footer><div class="wrap"><span>IDea Studio · Agência Criativa</span><a id="privacyLink" href="../creditos.html#privacy">Privacidade e cookies</a><span>Lisboa · Portugal</span></div></footer>
 <script>
 const prices=[199,399,599];
 const copy={
@@ -87,6 +87,8 @@ function render(next){
   [byId('agencyHome').href,byId('video').href]=pages[lang];
   byId('sitesLink').href=pages[lang][0]+'sites/';
   byId('sitesLink').textContent={"pt":"Criação de sites","en":"Web design","ru":"Создание сайтов"}[lang];
+  byId('privacyLink').href=pages[lang][0]+'creditos.html#privacy';
+  byId('privacyLink').textContent={"pt":"Privacidade e cookies","en":"Privacy and cookies","ru":"Конфиденциальность и cookies"}[lang];
   byId('homeLink').href=pages[lang][0];
   byId('homeLink').textContent={pt:'← Início',en:'← Home',ru:'← На главную'}[lang];
   const service=select.value||'0';

@@ -49,3 +49,6 @@
 .studio-logo{display:block;width:100%;height:auto}
 .brand{width:clamp(104px,16vw,160px)}
 .footer-wordmark{display:block;width:min(250px,55vw);flex-shrink:0}
+
+.video-toggle[hidden],#copy-brief[hidden]{display:none}#copy-brief{margin-inline-start:8px}#brief-status:empty{display:none}.legal-section{margin-top:34px;scroll-margin-top:120px}
+.film-top,.film-bottom{pointer-events:none}.film-bottom .video-toggle{pointer-events:auto}.media-frame:has(video[controls]) .film-bottom{bottom:54px}

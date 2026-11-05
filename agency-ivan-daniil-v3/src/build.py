@@ -8,6 +8,51 @@ CSS_REV=hashlib.sha256((ROOT/'assets/style.css').read_bytes()).hexdigest()[:10]
 JS_REV=hashlib.sha256((ROOT/'assets/app.js').read_bytes()).hexdigest()[:10]
 esc=lambda s:html.escape(str(s),quote=True)
 
+LAUNCH_COPY={
+ "pt": {
+  "home": "IDea Studio — Início",
+  "privacy": "Privacidade e cookies",
+  "terms": "Condições dos serviços",
+  "copy": "Copiar mensagem",
+  "ok": "Mensagem copiada.",
+  "fail": "Não foi possível copiar. Pode contactar-nos por telefone.",
+  "text": [
+   "O site apresenta os serviços da IDea Studio. O formulário prepara uma mensagem com o nome, o negócio, se indicado, e o pedido. A mensagem só é enviada se confirmar o envio no WhatsApp.",
+   "Usamos as informações que nos envia para responder ao pedido, preparar um orçamento e dar seguimento ao projeto. O alojamento pode tratar dados técnicos de acesso. Ao abrir o WhatsApp, aplicam-se também as condições e a política de privacidade desse serviço.",
+   "O site público não carrega ferramentas de analítica ou publicidade. Para questões sobre os seus dados ou para exercer os seus direitos, contacte-nos pelo telefone indicado abaixo."
+  ],
+  "service": "Os preços e pacotes apresentados descrevem o âmbito indicado. Antes de iniciar um projeto, confirmamos por escrito o preço final, as entregas, os prazos e as condições de pagamento."
+ },
+ "en": {
+  "home": "IDea Studio — Home",
+  "privacy": "Privacy and cookies",
+  "terms": "Service terms",
+  "copy": "Copy message",
+  "ok": "Message copied.",
+  "fail": "Could not copy. You can contact us by phone.",
+  "text": [
+   "This website presents IDea Studio’s services. The form prepares a message containing your name, business if supplied, and enquiry. The message is sent once you confirm it in WhatsApp.",
+   "We use information you send to answer your enquiry, prepare a quote and follow up on the project. The hosting provider may process technical access data. WhatsApp’s own terms and privacy policy apply when you open it.",
+   "The public site loads no analytics or advertising tools. For questions about your data or to exercise your rights, contact us at the phone number below."
+  ],
+  "service": "The prices and packages shown describe the stated scope. Before work starts, we confirm the final price, deliverables, schedule and payment terms in writing."
+ },
+ "ru": {
+  "home": "IDea Studio — Главная",
+  "privacy": "Конфиденциальность и cookies",
+  "terms": "Условия оказания услуг",
+  "copy": "Скопировать сообщение",
+  "ok": "Сообщение скопировано.",
+  "fail": "Не удалось скопировать. Можно связаться с нами по телефону.",
+  "text": [
+   "Сайт знакомит с услугами IDea Studio. Форма готовит сообщение с вашим именем, названием бизнеса, если вы его указали, и описанием задачи. Сообщение отправляется после вашего подтверждения в WhatsApp.",
+   "Данные, которые вы отправляете, используются для ответа, подготовки предложения и обсуждения проекта. Хостинг может обрабатывать технические данные о посещении. При переходе в WhatsApp действуют условия и политика конфиденциальности этого сервиса.",
+   "На публичном сайте не загружаются инструменты аналитики и рекламы. По вопросам обработки данных и для реализации своих прав свяжитесь с нами по телефону ниже."
+  ],
+  "service": "Цены и пакеты относятся к указанному объёму работ. До начала проекта письменно согласуем итоговую стоимость, состав работ, сроки и условия оплаты."
+ }
+}
+
 def path(lang,key):
     prefix='' if lang=='pt' else lang+'/'
     d=DATA[lang]
@@ -35,7 +80,7 @@ def media(lang,cur,kind='coffee',hero=False):
     d=DATA[lang];label=d['mediaLabels'][kind]
     if kind in ['content','reels']:
         return f'''<figure class="media-frame still {kind}"><img src="{asset(cur,kind+'.webp')}" width="900" height="1350" alt="{esc(label)}" fetchpriority="high"><div class="film-grain" aria-hidden="true"></div><figcaption class="film-bottom">{label}</figcaption></figure>'''
-    return f'''<figure class="media-frame {'hero-film' if hero else ''} {kind}"><video muted playsinline loop preload="none" poster="{asset(cur,kind+'.webp')}" data-video data-src="{asset(cur,kind+'.mp4')}" aria-label="{esc(label)}"></video><div class="film-grain" aria-hidden="true"></div><div class="film-top"><span><i></i> FILM / EDIT / MOTION</span><span>PLAY / LOOP</span></div><div class="film-bottom"><span>{label}</span><button class="video-toggle" type="button" data-play="{d['play']}" data-pause="{d['pause']}" aria-label="{d['play']}">▶</button></div></figure>'''
+    return f'''<figure class="media-frame {'hero-film' if hero else ''} {kind}"><video controls src="{asset(cur,kind+'.mp4')}" muted playsinline loop preload="none" poster="{asset(cur,kind+'.webp')}" data-video data-src="{asset(cur,kind+'.mp4')}" aria-label="{esc(label)}"></video><div class="film-grain" aria-hidden="true"></div><div class="film-top"><span><i></i> FILM / EDIT / MOTION</span><span>PLAY / LOOP</span></div><div class="film-bottom"><span>{label}</span><button class="video-toggle" hidden type="button" data-play="{d['play']}" data-pause="{d['pause']}" aria-label="{d['play']}">▶</button></div></figure>'''
 
 def services(lang,cur):
  d=DATA[lang]
@@ -80,7 +125,8 @@ def journal(lang,cur,full=False):
  for i,ar in enumerate(d['articles']):
   if cur==path(lang,'article-'+str(i)): continue
   image=['journal-social.webp','journal-shoot.webp','journal-edit.webp'][i]
-  visual=f'<img src="{asset(cur,image)}" width="1200" height="750" loading="lazy" alt="{esc(d["journalAlt"][i])}">' 
+  loading='fetchpriority="high"' if full and i==0 else 'loading="lazy"'
+  visual=f'<img src="{asset(cur,image)}" width="1200" height="750" {loading} alt="{esc(d["journalAlt"][i])}">' 
   cards+=f'<article class="article-card reveal"><a href="{link(lang,"article-"+str(i),cur)}"><div class="article-image">{visual}<span class="article-index mono">0{i+1}</span></div><div class="article-meta mono">{ar["category"]} / 04.11.2026</div><h3>{ar["title"]}</h3><p>{ar["excerpt"]}</p><span class="text-link">{d["read"]} ↗</span></a></article>'
  return f'<section class="section journal-section {"paper" if full else ""}"><div class="wrap">'+('' if full else f'<div class="section-heading"><h2>{d["journalH"]}</h2><a class="text-link" href="{link(lang,"blog",cur)}">{d["allArticles"]} ↗</a></div>')+f'<div class="article-grid {"two-articles" if cur.startswith(("blog/", "en/blog/", "ru/blog/")) and not cur.endswith("/index.html") else ""}">{cards}</div></div></section>'
 
@@ -172,8 +218,8 @@ def service_page(lang,key,cur):
  return f'''<section class="service-hero wrap"><div><p class="eyebrow">{s['tag']} · LISBOA</p><h1>{s['h']}</h1><p class="lead">{s['lead']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}{advertising_link}<p class="service-seo-label mono">{s['title']}</p></div><div class="service-visual">{visual}</div></section><section class="section paper"><div class="wrap"><div class="section-heading"><h2>{d['forWho']}</h2><p>{s['intro']}</p></div><ul class="who-grid">{who}</ul></div></section><section class="section"><div class="wrap delivery-layout"><div><p class="eyebrow">IDea Studio / OUTPUT</p><h2>{d['deliver']}</h2><ul class="check-list">{out}</ul></div><aside class="scope-panel"><p class="eyebrow">{d['scope']}</p><h3>{s['price']}</h3><p>{s['priceText']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="fineprint">{d['terms']}</p></aside></div></section>'''+(package(lang,cur) if key=='content' else '')+process(lang,cur)+faq(lang,s['faqs'])+f'<section class="section paper"><div class="wrap"><p class="eyebrow">{d["related"]}</p><div class="related-services">'+''.join(f'<a href="{link(lang,k,cur)}">{ss["name"]} ↗</a>' for k,ss in d['services'].items() if k!=key)+'</div></div></section>'+cta(lang,cur)
 
 def contact(lang,cur):
- d=DATA[lang]
- return f'''<section class="section wrap contact-layout"><div><p class="eyebrow">IDea Studio / CONTACT</p><h1>{d['contactH']}</h1><p class="lead">{d['contactLead']}</p><a class="contact-phone" href="tel:+{PHONE}">+351 967 901 942</a><a class="text-link" href="https://wa.me/{PHONE}">WhatsApp ↗</a><p class="fineprint">Lisboa, Portugal · PT / EN / RU</p></div><div class="form-panel"><form id="brief-form" action="https://wa.me/{PHONE}" method="get"><label for="brief-name">{d['name']}</label><input id="brief-name" autocomplete="name" maxlength="120" placeholder="{esc(d['namePlaceholder'])}" required><label for="brief-business">{d['businessLabel']}</label><input id="brief-business" autocomplete="organization" maxlength="160" placeholder="{esc(d['businessPlaceholder'])}"><label for="brief-task">{d['brief']}</label><textarea id="brief-task" rows="5" maxlength="1800" placeholder="{esc(d['briefPlaceholder'])}" required></textarea><input type="hidden" name="text" id="whatsapp-text" value="{esc(d['message'])}"><button class="button" type="submit">{d['send']} <span aria-hidden="true">↗</span></button><p class="fineprint">{d['formNote']}</p></form></div></section>'''
+ d=DATA[lang]; x=LAUNCH_COPY[lang]
+ return f'''<section class="section wrap contact-layout"><div><p class="eyebrow">IDea Studio / CONTACT</p><h1>{d['contactH']}</h1><p class="lead">{d['contactLead']}</p><a class="contact-phone" href="tel:+{PHONE}">+351 967 901 942</a><a class="text-link" href="https://wa.me/{PHONE}">WhatsApp ↗</a><p class="fineprint">Lisboa, Portugal · PT / EN / RU</p></div><div class="form-panel"><form id="brief-form" action="https://wa.me/{PHONE}" method="get"><label for="brief-name">{d['name']}</label><input id="brief-name" autocomplete="name" maxlength="120" placeholder="{esc(d['namePlaceholder'])}" required><label for="brief-business">{d['businessLabel']}</label><input id="brief-business" autocomplete="organization" maxlength="160" placeholder="{esc(d['businessPlaceholder'])}"><label for="brief-task">{d['brief']}</label><textarea id="brief-task" rows="5" maxlength="1800" placeholder="{esc(d['briefPlaceholder'])}" required></textarea><input type="hidden" name="text" id="whatsapp-text" value="{esc(d['message'])}"><button class="button" type="submit">{d['send']} <span aria-hidden="true">↗</span></button><button class="button button-outline" type="button" id="copy-brief" data-ok="{esc(x['ok'])}" data-fail="{esc(x['fail'])}" hidden>{x['copy']}</button><p class="fineprint" id="brief-status" role="status"></p><p class="fineprint">{d['formNote']}</p><p class="fineprint"><a href="{link(lang,'credits',cur,'#privacy')}">{x['privacy']}</a></p></form></div></section>'''
 
 def article(lang,idx,cur):
  d=DATA[lang]; ar=d['articles'][idx]
@@ -183,10 +229,11 @@ def article(lang,idx,cur):
  return f'''<header class="article-heading wrap"><a class="text-link" href="{link(lang,'blog',cur)}">← {d['back']}</a><p class="eyebrow">{ar['category']} / JOURNAL</p><h1>{ar['title']}</h1><p class="lead">{ar['excerpt']}</p><p class="mono">{d['author']} · 04.11.2026 · 3 {d['minutes']}</p></header><figure class="article-cover wrap"><img src="{asset(cur,['journal-social.webp','journal-shoot.webp','journal-edit.webp'][idx])}" width="1200" height="750" alt="{esc(d['journalAlt'][idx])}"></figure><div class="article-body wrap"><nav class="toc" aria-label="{d['nav'][3]}">{toc}</nav><article class="prose">{body}<aside class="article-offer"><h2>{d['monthly']}</h2><p>{d["plans"][0]["price"]} € {d['month']} · {d['trial']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service=content')}</aside><p><a class="text-link" href="{link(lang,'content',cur)}">{d['services']['content']['name']} ↗</a><br><a class="text-link" href="{link(lang,'video',cur)}">{d['services']['video']['name']} ↗</a>{reels_link}</p></article></div>'''+journal(lang,cur)+cta(lang,cur)
 
 def credits(lang,cur):
- d=DATA[lang]
+ d=DATA[lang]; x=LAUNCH_COPY[lang]
+ privacy_paragraphs=''.join(f'<p>{esc(p)}</p>' for p in x['text'])
  sources=[('Mixkit', 'Film production — 44069', 'https://mixkit.co/free-stock-video/young-man-recording-with-a-camera-on-a-set-44069/'), ('Mixkit', 'Barber — 43241', 'https://mixkit.co/free-stock-video/barber-begins-to-cut-the-hair-of-his-client-43241/'), ('Mixkit', 'Coffee — 41860', 'https://mixkit.co/free-stock-video/employee-serving-a-cup-of-coffee-from-a-machine-41860/'), ('Pexels / Amar Preciado', 'Product shoot — 7112246', 'https://www.pexels.com/video/a-videographer-holding-a-camera-7112246/'), ('Pexels / cottonbro studio', 'Social media — 5081926', 'https://www.pexels.com/photo/person-using-a-smartphone-5081926/'), ('Pexels / The Lazy Artist Gallery', 'Camera equipment — 4164088', 'https://www.pexels.com/photo/digital-camera-with-different-lenses-on-table-4164088/'), ('Pexels / Amar Preciado', 'Editing — 11025648', 'https://www.pexels.com/photo/a-laptop-near-the-computer-set-on-the-table-11025648/'), ('Pexels / Hanna Pad', 'Brand content — 12433033', 'https://www.pexels.com/photo/a-woman-being-recorded-on-a-camera-12433033/'), ('Pexels / Alan Quirván', 'Recording — 14540964', 'https://www.pexels.com/photo/woman-during-recording-14540964/')]
  items=''.join(f'<li><a href="{url}">{label} ↗</a><br><small>{author}</small></li>' for author,label,url in sources)
- return f'''<section class="section wrap legal"><p class="eyebrow">IDea Studio / INFO</p><h1>{d['creditTitle']}</h1><p class="lead">{d['creditText']}</p><ul class="media-credits">{items}</ul><p><a href="https://mixkit.co/license/#videoFree">Mixkit License ↗</a> · <a href="https://www.pexels.com/license/">Pexels License ↗</a></p><h2>{d['credits']}</h2><p>{d['privacyText']}</p><a href="tel:+{PHONE}">+351 967 901 942</a></section>'''
+ return f'''<section class="section wrap legal"><p class="eyebrow">IDea Studio / INFO</p><h1>{d['creditTitle']}</h1><p class="lead">{d['creditText']}</p><ul class="media-credits">{items}</ul><p><a href="https://mixkit.co/license/#videoFree">Mixkit License ↗</a> · <a href="https://www.pexels.com/license/">Pexels License ↗</a></p><div class="legal-section" id="privacy"><h2>{x['privacy']}</h2>{privacy_paragraphs}</div><div class="legal-section" id="terms"><h2>{x['terms']}</h2><p>{x['service']}</p></div><a href="tel:+{PHONE}">+351 967 901 942</a></section>'''
 
 def render(lang,key):
  d=DATA[lang];cur=path(lang,key)
@@ -218,6 +265,9 @@ def render(lang,key):
   graph.append({'@type':'OfferCatalog','@id':aurl(lang,'content')+'#packages','name':d['monthly'],'itemListElement':offers})
  if key.startswith('article-'):graph.append({'@type':'BlogPosting','headline':title,'description':desc,'datePublished':'2026-11-04','dateModified':'2026-11-04','author':{'@id':BASE+'#studio'},'publisher':{'@id':BASE+'#studio'},'mainEntityOfPage':canonical,'image':share_image,'inLanguage':d['lang']})
  if key!='home':graph.append({'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':1,'name':'IDea Studio','item':aurl(lang,'home')},{'@type':'ListItem','position':2,'name':title,'item':canonical}]})
+ head+=f'<link rel="icon" type="image/png" sizes="32x32" href="{asset(cur,"icon-32.png")}"><link rel="apple-touch-icon" sizes="180x180" href="{asset(cur,"apple-touch-icon.png")}">'
+ if key=='home':
+  head+=f'<link rel="preload" as="image" href="{asset(cur,"hero.webp")}" fetchpriority="high">'
  head+='<script type="application/ld+json">'+json.dumps({'@context':'https://schema.org','@graph':graph},ensure_ascii=False).replace('</',r'<\/')+'</script></head>'
  nav=f'''<a href="{link(lang,'home',cur,'#services')}">{d['nav'][0]}</a><a href="{link(lang,'content',cur,'#package')}">{d['nav'][1]}</a><a href="{link(lang,'home',cur,'#studio')}">{d['nav'][2]}</a><a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a>'''
  language_names={'pt':'Português','en':'English','ru':'Русский'}
@@ -232,7 +282,7 @@ def render(lang,key):
  desktop_nav=nav if key=='video' else nav+ads_nav
  header_ads=f'<a class="text-link" href="{ads_url}">{ads_label}</a>' if key=='video' else ''
  nav+=ads_nav
- header=f'''<body><a href="#main" class="skip-link">{d['skip']}</a><header class="site-header"><div class="wrap header-inner"><a href="{link(lang,'home',cur)}" class="brand"><img class="studio-logo" src="{asset(cur,'idea-studio-logo.png')}" alt="IDea Studio — Agência Criativa" lang="pt-PT" width="600" height="157"></a><nav class="desktop-nav" aria-label="{d['menu']}">{desktop_nav}</nav><div class="header-actions">{header_ads}<nav class="languages" aria-label="{language_label}">{langs}</nav><a class="header-contact" href="{link(lang,'contact',cur)}">{d['talk']} ↗</a><button id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">{d['menu']} <span>+</span></button></div></div><div class="mobile-language-bar wrap"><span class="language-label">{language_label}</span><nav class="languages" aria-label="{language_label}">{langs}</nav></div><nav id="mobile-menu" class="mobile-menu wrap" aria-label="{d['menu']}" hidden>{nav}<a href="{link(lang,'contact',cur)}">{d['talk']} ↗</a></nav></header>'''
+ header=f'''<body><a href="#main" class="skip-link">{d['skip']}</a><header class="site-header"><div class="wrap header-inner"><a href="{link(lang,'home',cur)}" class="brand" aria-label="{esc(LAUNCH_COPY[lang]['home'])}"><img class="studio-logo" src="{asset(cur,'idea-studio-logo.png')}" alt="IDea Studio — Agência Criativa" lang="pt-PT" width="600" height="157"></a><nav class="desktop-nav" aria-label="{d['menu']}">{desktop_nav}</nav><div class="header-actions">{header_ads}<nav class="languages" aria-label="{language_label}">{langs}</nav><a class="header-contact" href="{link(lang,'contact',cur)}">{d['talk']} ↗</a><button id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">{d['menu']} <span>+</span></button></div></div><div class="mobile-language-bar wrap"><span class="language-label">{language_label}</span><nav class="languages" aria-label="{language_label}">{langs}</nav></div><nav id="mobile-menu" class="mobile-menu wrap" aria-label="{d['menu']}" hidden>{nav}<a href="{link(lang,'contact',cur)}">{d['talk']} ↗</a></nav></header>'''
  if key=='home': body=home(lang,cur)
  elif key in d['services']: body=service_page(lang,key,cur)
  elif key=='blog': body=f'<section class="journal-hero wrap"><p class="eyebrow">IDea Studio / JOURNAL</p><h1>{d["journalH"]}</h1><p class="lead">{d["articles"][0]["excerpt"]}</p></section>'+journal(lang,cur,True)+cta(lang,cur)
@@ -241,7 +291,7 @@ def render(lang,key):
  else:body=article(lang,int(key.split('-')[1]),cur)
  editor_label={'pt':'Área de edição','en':'Blog editor','ru':'Редактор блога'}[lang]
  editor_link=f'<a href="https://idea-studio-editor.ivanromanenko.chatgpt.site/admin/">{editor_label}</a>' if key=='blog' else ''
- footer=f'''<footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="footer-wordmark" href="{link(lang,'home',cur)}"><img class="studio-logo" src="{asset(cur,'idea-studio-logo.png')}" alt="IDea Studio — Agência Criativa" lang="pt-PT" width="600" height="157"></a><p>{d['footerLine']}<br>Lisboa, Portugal</p></div><div class="footer-links">{''.join(f'<a href="{link(lang,k,cur)}">{s["name"]}</a>' for k,s in d['services'].items())}<a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a></div><div class="footer-bottom"><span>© 2026 IDea Studio</span><a href="tel:+{PHONE}">+351 967 901 942</a><a href="{link(lang,'credits',cur)}">{d['credits']}</a>{editor_link}<a href="#main" aria-label="Top">↑</a></div></div></footer>'''
+ footer=f'''<footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="footer-wordmark" href="{link(lang,'home',cur)}" aria-label="{esc(LAUNCH_COPY[lang]['home'])}"><img class="studio-logo" src="{asset(cur,'idea-studio-logo.png')}" alt="IDea Studio — Agência Criativa" lang="pt-PT" width="600" height="157"></a><p>{d['footerLine']}<br>Lisboa, Portugal</p></div><div class="footer-links">{''.join(f'<a href="{link(lang,k,cur)}">{s["name"]}</a>' for k,s in d['services'].items())}<a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a></div><div class="footer-bottom"><span>© 2026 IDea Studio</span><a href="tel:+{PHONE}">+351 967 901 942</a><a href="{link(lang,'credits',cur)}">{d['credits']}</a>{editor_link}<a href="#main" aria-label="Top">↑</a></div></div></footer>'''
  locale={k:d[k] for k in ['message','name','business','service','brief','menu','close','planLabel']}
  locale['serviceNames']={k:v['name'] for k,v in d['services'].items()}
  locale['planNames']={v['key']:v['name'] for v in d['plans']}
