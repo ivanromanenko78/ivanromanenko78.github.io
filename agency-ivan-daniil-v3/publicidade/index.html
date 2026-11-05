@@ -28,7 +28,7 @@ header{border-bottom:1px solid var(--line)}header .wrap,footer .wrap{display:fle
 </style>
 </head>
 <body>
-<header><div class="wrap"><a href="../" id="agencyHome" class="brand"><img src="../assets/idea-studio-logo.png" alt="IDea Studio — Agência Criativa" width="600" height="157"></a><div class="header-links"><a id="homeLink" href="../">← Início</a><div class="lang" aria-label="Idioma / Language / Язык"><button type="button" data-lang="pt">PT</button><button type="button" data-lang="en">EN</button><button type="button" data-lang="ru">RU</button></div></div></div></header>
+<header><div class="wrap"><a href="../" id="agencyHome" class="brand"><img src="../assets/idea-studio-logo.png" alt="IDea Studio — Agência Criativa" width="600" height="157"></a><div class="header-links"><a id="homeLink" href="../">← Início</a><a id="sitesLink" href="../sites/">Criação de sites</a><div class="lang" aria-label="Idioma / Language / Язык"><button type="button" data-lang="pt">PT</button><button type="button" data-lang="en">EN</button><button type="button" data-lang="ru">RU</button></div></div></div></header>
 <main class="wrap" id="top">
 <section class="hero">
 <div><div class="eyebrow" id="tag">Lisboa / Marketing digital</div><h1 id="headline">Publicidade digital e gestão de redes sociais em Lisboa</h1><p id="lead">Ajudamos negócios em Lisboa a lançar campanhas e a manter as suas redes sociais ativas.</p><div class="actions"><a class="btn" href="#ads" id="browse">Ver pacotes ↓</a><a class="btn light" href="https://wa.me/351967901942">WhatsApp ↗</a></div></div>
@@ -85,6 +85,8 @@ function render(next){
     ru:['../ru/','../ru/video-production-lisbon.html']
   };
   [byId('agencyHome').href,byId('video').href]=pages[lang];
+  byId('sitesLink').href=pages[lang][0]+'sites/';
+  byId('sitesLink').textContent={"pt":"Criação de sites","en":"Web design","ru":"Создание сайтов"}[lang];
   byId('homeLink').href=pages[lang][0];
   byId('homeLink').textContent={pt:'← Início',en:'← Home',ru:'← На главную'}[lang];
   const service=select.value||'0';

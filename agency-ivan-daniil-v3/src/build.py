@@ -161,6 +161,9 @@ def render(lang,key):
  ads_label={'pt':'Publicidade','en':'Advertising','ru':'Реклама'}[lang]
  ads_url=rel(cur,'publicidade')+'/?lang='+lang
  ads_nav=f'<a href="{ads_url}">{ads_label}</a>'
+ sites_label={"pt":"Criação de sites","en":"Web design","ru":"Создание сайтов"}[lang]
+ sites_url=rel(cur,path(lang,'home')).removesuffix('index.html')+'sites/'
+ nav+=f'<a href="{sites_url}">{sites_label}</a>'
  desktop_nav=nav if key=='video' else nav+ads_nav
  header_ads=f'<a class="text-link" href="{ads_url}">{ads_label}</a>' if key=='video' else ''
  nav+=ads_nav
@@ -181,6 +184,6 @@ def render(lang,key):
 
 keys=['home','content','reels','video','motion','blog','contact','credits']+['article-'+str(i) for i in range(3)]
 urls=[render(lng,k) for lng in DATA for k in keys]
-xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{u}</loc><lastmod>2026-11-04</lastmod></url>' for u in urls)+f'<url><loc>{BASE}publicidade/</loc></url></urlset>'
+xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{u}</loc><lastmod>2026-11-04</lastmod></url>' for u in urls)+f'<url><loc>{BASE}publicidade/</loc></url>'+''.join(f'<url><loc>{BASE}{folder}sites/</loc></url>' for folder in ('','en/','ru/'))+'</urlset>'
 (ROOT/'sitemap.xml').write_text(xml)
 print(f'Built {len(urls)} pages in PT / EN / RU')
