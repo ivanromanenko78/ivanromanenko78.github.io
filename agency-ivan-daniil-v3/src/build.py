@@ -155,7 +155,7 @@ def render(lang,key):
  langs=''.join(f'<a href="{rel(cur,path(lng,key))}" lang="{DATA[lng]["lang"]}" hreflang="{DATA[lng]["lang"]}" aria-label="{language_names[lng]}" {"aria-current=page" if lng==lang else ""}>{language_names[lng]}</a>' for lng in DATA)
  if key=='home':
   ads_label={'pt':'Publicidade','en':'Advertising','ru':'Реклама'}[lang]
-  ads_url=rel(cur,'publicidade/')+'?lang='+lang
+  ads_url=rel(cur,'publicidade')+'/?lang='+lang
   nav+=f'<a href="{ads_url}">{ads_label}</a>'
  header=f'''<body><a href="#main" class="skip-link">{d['skip']}</a><header class="site-header"><div class="wrap header-inner"><a href="{link(lang,'home',cur)}" class="brand"><img class="studio-logo" src="{asset(cur,'idea-studio-logo.png')}" alt="IDea Studio — Agência Criativa" lang="pt-PT" width="600" height="157"></a><nav class="desktop-nav" aria-label="{d['menu']}">{nav}</nav><div class="header-actions"><nav class="languages" aria-label="{language_label}">{langs}</nav><a class="header-contact" href="{link(lang,'contact',cur)}">{d['talk']} ↗</a><button id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">{d['menu']} <span>+</span></button></div></div><div class="mobile-language-bar wrap"><span class="language-label">{language_label}</span><nav class="languages" aria-label="{language_label}">{langs}</nav></div><nav id="mobile-menu" class="mobile-menu wrap" aria-label="{d['menu']}" hidden>{nav}<a href="{link(lang,'contact',cur)}">{d['talk']} ↗</a></nav></header>'''
  if key=='home': body=home(lang,cur)
