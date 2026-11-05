@@ -25,3 +25,23 @@
 .languages{display:flex;align-items:center;gap:4px;padding:4px;border:1px solid #ffffff45;border-radius:30px;background:#22291d;font:12px Arial,Helvetica,sans-serif}.languages a{display:flex;align-items:center;justify-content:center;min-height:36px;padding:8px 12px;border:0;border-radius:24px;color:#f2f3eb;line-height:1.2;white-space:nowrap;transition:background .2s,color .2s}.languages a:hover,.languages a:focus-visible{background:#3b4930;color:#fff}.languages a[aria-current]{background:var(--lime);color:var(--dark);border:0;font-weight:700}.mobile-language-bar{display:none}.language-label{font-size:11px;color:var(--muted)}
 @media(max-width:640px){html{scroll-padding-top:150px}.header-inner{min-height:68px}.header-actions>.languages{display:none}.mobile-language-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:0 12px}.mobile-language-bar .languages{gap:3px;padding:3px}.mobile-language-bar .languages a{min-height:36px;padding:8px 11px;font-size:12px}.mobile-language-bar .language-label{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.languages a{transition:none}}
+
+/* Give the Premium bonus its own readable callout. */
+.tier-bonus {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  border: 1px solid #c6f36a55;
+  border-left: 3px solid var(--lime);
+  border-radius: 12px;
+  background: #27321d;
+  color: #f2f3eb;
+  font-size: 16px;
+  line-height: 1.45;
+}
+.tier-bonus strong {
+  color: var(--lime);
+  font-size: 17px;
+  line-height: 1.25;
+}

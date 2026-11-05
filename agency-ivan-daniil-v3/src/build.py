@@ -55,7 +55,7 @@ def package(lang,cur):
   bonus=''
   if plan.get('bonus'):
    label, description=plan['bonus']
-   bonus=f'<p class="fineprint"><strong>{esc(label)}:</strong> {esc(description)}</p>'
+   bonus=f'<p class="tier-bonus"><strong>{esc(label)}</strong><span>{esc(description)}</span></p>'
   cards+=f'''<article class="tier-card {'tier-recommended' if recommended else ''}">{badge}<h3>{plan['name']}</h3><p class="tier-subtitle">{plan['subtitle']}</p><div class="tier-price">{prefix}<strong>{price} €</strong><span>{d['month']}</span></div><dl class="tier-features">{rows}</dl>{bonus}{btn(d['choosePlan'],link(lang,'contact',cur)+'?service=content&plan='+plan['key'])}</article>'''
  shared=''.join(f'<div><h4>{h}</h4><p>{p}</p></div>' for h,p in d['sharedFeatures'])
  return f'''<section id="package" class="section"><div class="wrap"><div class="section-heading"><div><p class="eyebrow">INSTAGRAM + FACEBOOK</p><h2>{d['packageH']}</h2></div><p>{d['packageLead']}</p></div><div class="tier-grid">{cards}</div><div class="package-common"><h3>{d['sharedTitle']}</h3><div class="package-shared">{shared}</div><p class="package-counting">{d['countingNote']}</p><p class="fineprint">{d['trial']}</p></div><aside class="ad-budget"><span aria-hidden="true">↗</span><div><h3>{d['adBudgetTitle']}</h3><p>{d['adBudgetNote']}</p></div></aside><p class="fineprint">{d['terms']}</p></div></section>'''
