@@ -99,8 +99,13 @@ def home(lang,cur):
 def service_page(lang,key,cur):
  d=DATA[lang];s=d['services'][key]
  visual=motion(d) if key=='motion' else media(lang,cur,{'content':'content','reels':'reels','video':'camera'}[key])
+ advertising_link=''
+ if key=='video':
+  ads_label={"pt":"Publicidade e gestão de redes sociais","en":"Advertising and social media management","ru":"Реклама и ведение соцсетей"}[lang]
+  ads_url=rel(cur,'publicidade')+'/?lang='+lang
+  advertising_link=f'<p><a class="text-link" href="{ads_url}">{ads_label} ↗</a></p>'
  who=''.join(f'<li>{x}</li>' for x in s['who']); out=''.join(f'<li>{x}</li>' for x in s['out'])
- return f'''<section class="service-hero wrap"><div><p class="eyebrow">{s['tag']} · LISBOA</p><h1>{s['h']}</h1><p class="lead">{s['lead']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="service-seo-label mono">{s['title']}</p></div><div class="service-visual">{visual}</div></section><section class="section paper"><div class="wrap"><div class="section-heading"><h2>{d['forWho']}</h2><p>{s['intro']}</p></div><ul class="who-grid">{who}</ul></div></section><section class="section"><div class="wrap delivery-layout"><div><p class="eyebrow">IDea Studio / OUTPUT</p><h2>{d['deliver']}</h2><ul class="check-list">{out}</ul></div><aside class="scope-panel"><p class="eyebrow">{d['scope']}</p><h3>{s['price']}</h3><p>{s['priceText']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="fineprint">{d['terms']}</p></aside></div></section>'''+(package(lang,cur) if key=='content' else '')+process(lang,cur)+faq(lang,s['faqs'])+f'<section class="section paper"><div class="wrap"><p class="eyebrow">{d["related"]}</p><div class="related-services">'+''.join(f'<a href="{link(lang,k,cur)}">{ss["name"]} ↗</a>' for k,ss in d['services'].items() if k!=key)+'</div></div></section>'+cta(lang,cur)
+ return f'''<section class="service-hero wrap"><div><p class="eyebrow">{s['tag']} · LISBOA</p><h1>{s['h']}</h1><p class="lead">{s['lead']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}{advertising_link}<p class="service-seo-label mono">{s['title']}</p></div><div class="service-visual">{visual}</div></section><section class="section paper"><div class="wrap"><div class="section-heading"><h2>{d['forWho']}</h2><p>{s['intro']}</p></div><ul class="who-grid">{who}</ul></div></section><section class="section"><div class="wrap delivery-layout"><div><p class="eyebrow">IDea Studio / OUTPUT</p><h2>{d['deliver']}</h2><ul class="check-list">{out}</ul></div><aside class="scope-panel"><p class="eyebrow">{d['scope']}</p><h3>{s['price']}</h3><p>{s['priceText']}</p>{btn(d['talk'],link(lang,'contact',cur)+'?service='+key)}<p class="fineprint">{d['terms']}</p></aside></div></section>'''+(package(lang,cur) if key=='content' else '')+process(lang,cur)+faq(lang,s['faqs'])+f'<section class="section paper"><div class="wrap"><p class="eyebrow">{d["related"]}</p><div class="related-services">'+''.join(f'<a href="{link(lang,k,cur)}">{ss["name"]} ↗</a>' for k,ss in d['services'].items() if k!=key)+'</div></div></section>'+cta(lang,cur)
 
 def contact(lang,cur):
  d=DATA[lang]
@@ -173,6 +178,6 @@ def render(lang,key):
 
 keys=['home','content','reels','video','motion','blog','contact','credits']+['article-'+str(i) for i in range(3)]
 urls=[render(lng,k) for lng in DATA for k in keys]
-xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{u}</loc><lastmod>2026-11-04</lastmod></url>' for u in urls)+'</urlset>'
+xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{u}</loc><lastmod>2026-11-04</lastmod></url>' for u in urls)+f'<url><loc>{BASE}publicidade/</loc></url></urlset>'
 (ROOT/'sitemap.xml').write_text(xml)
 print(f'Built {len(urls)} pages in PT / EN / RU')
