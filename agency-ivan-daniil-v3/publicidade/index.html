@@ -11,7 +11,7 @@
 :root{--paper:#f8f7f2;--ink:#171916;--muted:#52564d;--line:#dedfd5;--lime:#d9f96d}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,sans-serif;line-height:1.55}a{color:inherit}button,input,select{font:inherit}button,a,input,select{outline-offset:4px}button{cursor:pointer}.wrap{width:min(1140px,calc(100% - 40px));margin:auto}
 header{border-bottom:1px solid var(--line)}header .wrap,footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 0}.brand{text-decoration:none;font-size:25px;font-weight:720;letter-spacing:-.065em;line-height:1}.brand img{display:block;width:clamp(105px,18vw,160px);height:auto}.brand small{display:block;font-size:9px;letter-spacing:.21em;margin-top:6px}
-.lang{display:flex;gap:3px}.lang button{border:0;background:transparent;border-radius:100px;padding:7px 10px;font-size:12px;font-weight:750}.lang button[aria-pressed=true]{background:var(--ink);color:white}
+.header-links{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}.header-links>a{font-size:13px;font-weight:750;white-space:nowrap}.lang{display:flex;gap:3px}.lang button{border:0;background:transparent;border-radius:100px;padding:7px 10px;font-size:12px;font-weight:750}.lang button[aria-pressed=true]{background:var(--ink);color:white}
 .hero{display:grid;grid-template-columns:1.5fr 1fr;align-items:stretch;gap:32px;padding:68px 0 44px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.hero h1{font-size:clamp(42px,6.5vw,91px);line-height:.98;letter-spacing:-.075em;margin:18px 0 22px;text-wrap:balance}.hero p,.intro{max-width:630px;color:var(--muted);font-size:17px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.btn{display:inline-flex;justify-content:center;align-items:center;gap:10px;border-radius:100px;border:1px solid var(--ink);text-decoration:none;padding:11px 17px;background:var(--ink);color:white;font-weight:700}.btn.light{background:transparent;color:var(--ink)}.btn.lime{background:var(--lime);color:var(--ink)}
 .art{min-height:310px;display:grid;place-items:center;background:#20251b;border-radius:22px;overflow:hidden}.art svg{width:100%;max-width:460px;height:auto;display:block}
 .platforms{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:40px}.platforms span{border:1px solid var(--line);border-radius:30px;padding:6px 12px;font-size:13px;font-weight:650}
@@ -22,7 +22,7 @@ header{border-bottom:1px solid var(--line)}header .wrap,footer .wrap{display:fle
 </style>
 </head>
 <body>
-<header><div class="wrap"><a href="../" id="agencyHome" class="brand"><img src="../assets/idea-studio-logo.png" alt="IDea Studio — Agência Criativa" width="600" height="157"></a><div class="lang" aria-label="Idioma / Language / Язык"><button type="button" data-lang="pt">PT</button><button type="button" data-lang="en">EN</button><button type="button" data-lang="ru">RU</button></div></div></header>
+<header><div class="wrap"><a href="../" id="agencyHome" class="brand"><img src="../assets/idea-studio-logo.png" alt="IDea Studio — Agência Criativa" width="600" height="157"></a><div class="header-links"><a id="homeLink" href="../">← Início</a><div class="lang" aria-label="Idioma / Language / Язык"><button type="button" data-lang="pt">PT</button><button type="button" data-lang="en">EN</button><button type="button" data-lang="ru">RU</button></div></div></div></header>
 <main class="wrap" id="top">
 <section class="hero">
 <div><div class="eyebrow" id="tag"></div><h1 id="headline"></h1><p id="lead"></p><div class="actions"><a class="btn" href="#ads" id="browse"></a><a class="btn light" href="https://wa.me/351967901942">WhatsApp ↗</a></div></div>
@@ -75,6 +75,8 @@ function render(next){
     ru:['../ru/','../ru/video-production-lisbon.html']
   };
   [byId('agencyHome').href,byId('video').href]=pages[lang];
+  byId('homeLink').href=pages[lang][0];
+  byId('homeLink').textContent={pt:'← Início',en:'← Home',ru:'← На главную'}[lang];
   const service=select.value||'0';
   document.documentElement.lang=lang==='pt'?'pt-PT':lang;
   document.title='IDea Studio — '+t.headline.replace(/\.$/,'');
