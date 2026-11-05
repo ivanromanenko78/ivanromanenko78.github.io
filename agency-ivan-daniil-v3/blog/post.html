@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-PT">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IDea Studio — Blog</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><main class="section wrap"><p class="eyebrow">IDea Studio / Blog</p><p><a class="text-link" id="back" href="./">← Blog</a></p><article class="prose"><h1 id="title">IDea Studio</h1><p id="status" role="status"></p><div id="content"></div></article></main>
+<script>
+(async()=>{
+ const params=new URLSearchParams(location.search);
+ const lang=params.get('lang');
+ const pt=lang==='pt';
+ const messages={pt:'Artigo indisponível.',en:'Article unavailable.',ru:'Статья недоступна.'};
+ if(!Object.hasOwn(messages,lang))return;
+ document.documentElement.lang=pt?'pt-PT':lang;
+ document.getElementById('back').href=pt?'./':'../'+lang+'/blog/';
+ const status=document.getElementById('status');
+ try{
+  const response=await fetch('https://idea-studio-blog-api.ivanromanenko.chatgpt.site/posts?'+new URLSearchParams({lang,id:params.get('id')??''}));
+  if(!response.ok)throw new Error();
+  const article=await response.json();
+  document.title=article.title+' | IDea Studio';
+  document.getElementById('title').textContent=article.title;
+  const content=document.getElementById('content');
+  if(article.cover){const image=document.createElement('img');image.src=article.cover;image.alt='';image.style.height='auto';content.append(image);}
+  for(const text of article.body.split(/\n\s*\n/)){const p=document.createElement('p');p.textContent=text;p.style.whiteSpace='pre-line';content.append(p);}
+ }catch{status.textContent=messages[lang];}
+})();
+</script></body></html>

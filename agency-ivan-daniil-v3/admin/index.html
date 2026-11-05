@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IDea Studio — редактор блога</title>
+<style>
+:root{color-scheme:dark;--bg:#111411;--surface:#1b211a;--line:#394434;--text:#f2f3eb;--muted:#b2bcad;--accent:#c6f16a}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,sans-serif}header,main{width:min(1120px,calc(100% - 28px));margin:auto}header{padding:22px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}header strong{font-size:21px}small,.note{color:var(--muted)}[hidden]{display:none!important}main{display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px;margin-top:20px;margin-bottom:24px}.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}h1,h2{margin:0 0 10px}button,input,textarea,select{font:inherit;color:inherit}button,input,textarea,select{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:8px 12px}button{cursor:pointer}button:disabled{opacity:.5;cursor:default}.primary{background:var(--accent);color:#111411;font-weight:700}label{display:block;margin:12px 0}label input,label textarea,label select{display:block;width:100%;margin-top:4px}textarea{resize:vertical;min-height:250px}.row,.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}#drafts button{display:block;width:100%;text-align:left;margin-top:6px;overflow-wrap:anywhere}#drafts button[aria-current=true]{border-color:var(--accent)}#photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}#photos img{width:100%;height:95px;object-fit:cover;border-radius:8px}#photos figure{margin:0}#photos button{font-size:13px}dialog{width:min(780px,calc(100% - 24px));max-height:90vh;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}dialog::backdrop{background:#000a}dialog img{max-width:100%;display:block;margin:12px auto;border-radius:8px}article{overflow-wrap:anywhere}#status{min-height:1.5em;margin:10px 0 0}.note{font-size:14px}:focus-visible{outline:2px solid var(--accent);outline-offset:3px}@media(max-width:650px){main{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><strong>IDea Studio / Блог</strong><a href="../ru/blog/" style="color:inherit">Вернуться в блог</a></header>
+<section class="panel" id="login" style="max-width:420px;margin:24px auto"><h1>Вход в редактор</h1><form id="loginForm"><label>Логин<input id="loginName" autocomplete="username" required></label><label>Пароль<input id="loginPassword" type="password" autocomplete="current-password" required></label><button class="primary">Войти</button><p id="loginStatus" role="status"></p></form></section><main id="adminPanel" hidden>
+<aside class="panel"><h2>Черновики</h2><button type="button" id="new">+ Новая статья</button><div id="drafts"></div></aside>
+<section class="panel">
+<h1>Редактор статьи</h1>
+<form id="editor">
+<label>Язык статьи<select id="lang"><option value="pt-PT">Português</option><option value="en">English</option><option value="ru" selected>Русский</option></select></label>
+<label>Заголовок<input id="title" maxlength="180" spellcheck="true"></label>
+<label>Текст<textarea id="body" spellcheck="true" placeholder="Напишите статью. Пустая строка отделяет абзацы."></textarea></label>
+<p class="note">Проверку правописания выполняет браузер. Для каждого языка нужен установленный словарь.</p>
+<label>Добавить обложку<input id="files" type="file" accept="image/jpeg,image/png,image/webp"></label>
+<p class="note">Обложка JPEG, PNG или WebP, до 2 МБ.</p>
+<div id="photos"></div>
+<div class="actions"><button class="primary" id="save" type="submit">Сохранить черновик</button><button id="preview" type="button">Предпросмотр</button><button id="publish" type="button" class="primary">Опубликовать</button><button id="export" type="button">Скачать статью</button></div>
+<p id="status" role="status"></p><a id="postLink" hidden style="color:var(--accent)">Открыть опубликованную статью ↗</a>
+</form></section></main>
+<dialog id="previewDialog"><form method="dialog"><button>Закрыть</button></form><article id="previewArticle"></article></dialog>
+<script>
+const el=id=>document.getElementById(id);
+const empty=()=>({id:crypto.randomUUID(),lang:'ru',title:'',body:'',photos:[]});
+let current=empty();
+let dirty=false;
+let busy=false;
+let saved=[];
+const database=new Promise((resolve,reject)=>{
+  const request=indexedDB.open('idea-studio-editor',1);
+  request.onupgradeneeded=()=>request.result.createObjectStore('drafts',{keyPath:'id'});
+  request.onsuccess=()=>resolve(request.result);
+  request.onerror=()=>reject(request.error);
+});
+async function query(mode,operation){
+  const db=await database;
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction('drafts',mode);
+    const request=operation(tx.objectStore('drafts'));
+    tx.oncomplete=()=>resolve(request.result);
+    tx.onabort=()=>reject(tx.error);
+    tx.onerror=()=>reject(tx.error);
+  });
+}
+function status(message){el('status').textContent=message;}
+function syncLang(){for(const id of ['title','body'])el(id).lang=el('lang').value;}
+function load(draft){
+  if(busy||(dirty&&!confirm('Перейти без сохранения изменений?')))return;
+  current=structuredClone(draft);
+  for(const id of ['title','body','lang'])el(id).value=current[id];
+  el('files').value='';
+  syncLang();
+  dirty=false;
+  photos();
+  list();
+  status('');
+  el('postLink').hidden=true;
+}
+function snapshot(){
+  return {...current,title:el('title').value.trim(),body:el('body').value.trim(),lang:el('lang').value,updated:Date.now()};
+}
+function photos(){
+  el('photos').replaceChildren(...current.photos.map((photo,i)=>{
+    const figure=document.createElement('figure');
+    const img=document.createElement('img');
+    img.src=photo.src;
+    img.alt=photo.name;
+    const button=document.createElement('button');
+    button.type='button';
+    button.textContent=i===0?'Убрать обложку':'Убрать фото';
+    button.onclick=()=>{
+      if(busy)return;
+      current.photos.splice(i,1);
+      dirty=true;
+      photos();
+    };
+    figure.append(img,button);
+    return figure;
+  }));
+}
+function list(){
+  el('drafts').replaceChildren(...saved.map(draft=>{
+    const button=document.createElement('button');
+    button.type='button';
+    button.textContent=(draft.title||'Без заголовка')+' · '+draft.lang;
+    button.setAttribute('aria-current',String(draft.id===current.id));
+    button.onclick=()=>load(draft);
+    return button;
+  }));
+}
+function readPhoto(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve({src:reader.result,name:file.name});
+    reader.onerror=()=>reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+el('files').onchange=async event=>{
+  const files=[...event.target.files];
+  event.target.value='';
+  if(!files.length||busy)return;
+  if(files.length>1||files.some(f=>!['image/jpeg','image/png','image/webp'].includes(f.type)||f.size>2*1024*1024)){
+    status('Выбери обложку JPEG, PNG или WebP до 2 МБ.');
+    return;
+  }
+  busy=true;
+  try{
+    current.photos=[await readPhoto(files[0])];
+    dirty=true;
+    photos();
+    status('Фото добавлены. Сохрани черновик.');
+  }catch{status('Не удалось прочитать фото.');}
+  finally{busy=false;}
+};
+el('editor').oninput=event=>{if(event.target.id!=='files')dirty=true;};
+el('lang').onchange=syncLang;
+el('new').onclick=()=>load(empty());
+el('editor').onsubmit=async event=>{
+  event.preventDefault();
+  if(busy)return;
+  const draft=snapshot();
+  if(!draft.title&&!draft.body&&!draft.photos.length){status('Добавь заголовок, текст или фото.');return;}
+  busy=true;
+  const fields=['title','body','lang','files','save'].map(el);
+  fields.forEach(field=>field.disabled=true);
+  try{
+    await query('readwrite',store=>store.put(draft));
+    current=draft;
+    dirty=false;
+    saved=[draft,...saved.filter(item=>item.id!==draft.id)];
+    list();
+    status('Черновик сохранён.');
+  }catch{status('Сохранение недоступно. Можно скачать статью.');}
+  finally{fields.forEach(field=>field.disabled=false);busy=false;}
+};
+function article(draft){
+  const node=document.createElement('article');
+  node.lang=draft.lang;
+  const title=document.createElement('h1');
+  title.textContent=draft.title||'Без заголовка';
+  node.append(title);
+  function image(photo){
+    const img=document.createElement('img');
+    img.src=photo.src;
+    img.alt=photo.name;
+    node.append(img);
+  }
+  if(draft.photos.length)image(draft.photos[0]);
+  for(const paragraph of draft.body.split(/\n\s*\n/).filter(Boolean)){
+    const p=document.createElement('p');
+    p.style.whiteSpace='pre-line';
+    p.textContent=paragraph;
+    node.append(p);
+  }
+  draft.photos.slice(1).forEach(image);
+  return node;
+}
+const api='https://idea-studio-blog-api.ivanromanenko.chatgpt.site';
+let authorization='';
+async function call(path, options={}){
+  const response=await fetch(api+path,{...options,headers:{Authorization:authorization,...options.headers}});
+  if(!response.ok)throw new Error(response.status===401?'Неверный логин или пароль.':'Сервис публикации недоступен или данные не приняты.');
+  return response.json();
+}
+el('loginForm').onsubmit=async event=>{
+  event.preventDefault();
+  const button=event.currentTarget.querySelector('button');
+  button.disabled=true;
+  try{
+    authorization='Basic '+btoa(el('loginName').value.trim()+':'+el('loginPassword').value);
+    await call('/session');
+    el('loginPassword').value='';
+    el('login').hidden=true;
+    el('adminPanel').hidden=false;
+  }catch(error){
+    authorization='';
+    el('loginStatus').textContent=error.message;
+  }finally{button.disabled=false;}
+};
+el('publish').onclick=async()=>{
+  if(busy)return;
+  const draft=snapshot();
+  if(!draft.title||!draft.body){status('Добавь заголовок и текст.');return;}
+  const lang=draft.lang==='pt-PT'?'pt':draft.lang;
+  const article={id:draft.id,lang,title:draft.title,body:draft.body,cover:draft.photos[0]?.src??''};
+  const fields=['title','body','lang','files','save','publish'].map(el);
+  busy=true;
+  fields.forEach(field=>field.disabled=true);
+  try{
+    await call('/posts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(article)});
+    const link=el('postLink');
+    link.href='../blog/post.html?'+new URLSearchParams({lang,id:draft.id});
+    link.hidden=false;
+    status('Статья опубликована.');
+    try{
+      await query('readwrite',store=>store.put(draft));
+      current=draft;
+      saved=[draft,...saved.filter(item=>item.id!==draft.id)];
+      dirty=false;
+      list();
+    }catch{status('Статья опубликована. Локальный черновик сохранить не удалось.');}
+  }catch(error){status(error.message);}
+  finally{busy=false;fields.forEach(field=>field.disabled=false);}
+};
+el('preview').onclick=()=>{
+  el('previewArticle').replaceChildren(article(snapshot()));
+  el('previewDialog').showModal();
+};
+el('export').onclick=()=>{
+  if(busy)return;
+  const draft=snapshot();
+  const doc=document.implementation.createHTMLDocument(draft.title||'IDea Studio');
+  doc.documentElement.lang=draft.lang;
+  const viewport=doc.createElement('meta');
+  viewport.name='viewport';
+  viewport.content='width=device-width, initial-scale=1';
+  const style=doc.createElement('style');
+  style.textContent='body{max-width:760px;margin:32px auto;padding:0 16px;font:18px/1.6 system-ui,sans-serif;overflow-wrap:anywhere}img{display:block;max-width:100%;height:auto;margin:16px 0}';
+  doc.head.append(viewport,style);
+  doc.body.append(article(draft));
+  const href=URL.createObjectURL(new Blob(['<!doctype html>',doc.documentElement.outerHTML],{type:'text/html;charset=utf-8'}));
+  const a=document.createElement('a');
+  a.href=href;
+  a.download='IDea-Studio-Article.html';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(href),1000);
+};
+window.addEventListener('beforeunload',event=>{if(dirty)event.preventDefault();});
+syncLang();
+query('readonly',store=>store.getAll()).then(drafts=>{
+  saved=drafts.sort((a,b)=>b.updated-a.updated);
+  list();
+}).catch(()=>status('Браузер не дал доступ к черновикам. Открой скачанный файл в обычном окне браузера.'));
+</script>
+</body>
+</html>

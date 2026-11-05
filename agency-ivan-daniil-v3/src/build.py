@@ -285,12 +285,15 @@ def render(lang,key):
  header=f'''<body><a href="#main" class="skip-link">{d['skip']}</a><header class="site-header"><div class="wrap header-inner"><a href="{link(lang,'home',cur)}" class="brand" aria-label="{esc(LAUNCH_COPY[lang]['home'])}"><img class="studio-logo" src="{asset(cur,'idea-studio-logo.png')}" alt="IDea Studio — Agência Criativa" lang="pt-PT" width="600" height="157"></a><nav class="desktop-nav" aria-label="{d['menu']}">{desktop_nav}</nav><div class="header-actions">{header_ads}<nav class="languages" aria-label="{language_label}">{langs}</nav><a class="header-contact" href="{link(lang,'contact',cur)}">{d['talk']} ↗</a><button id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">{d['menu']} <span>+</span></button></div></div><div class="mobile-language-bar wrap"><span class="language-label">{language_label}</span><nav class="languages" aria-label="{language_label}">{langs}</nav></div><nav id="mobile-menu" class="mobile-menu wrap" aria-label="{d['menu']}" hidden>{nav}<a href="{link(lang,'contact',cur)}">{d['talk']} ↗</a></nav></header>'''
  if key=='home': body=home(lang,cur)
  elif key in d['services']: body=service_page(lang,key,cur)
- elif key=='blog': body=f'<section class="journal-hero wrap"><p class="eyebrow">IDea Studio / JOURNAL</p><h1>{d["journalH"]}</h1><p class="lead">{d["articles"][0]["excerpt"]}</p></section>'+journal(lang,cur,True)+cta(lang,cur)
+ elif key=='blog':
+  posts_title={"pt":"Artigos recentes","en":"Recent articles","ru":"Новые статьи"}[lang]
+  posts_feed=f'<section class="section wrap" hidden data-published-posts="{lang}" data-post-page="{rel(cur,"blog/post.html")}"><h2>{posts_title}</h2></section>'
+  body=posts_feed+f'<section class="journal-hero wrap"><p class="eyebrow">IDea Studio / JOURNAL</p><h1>{d["journalH"]}</h1><p class="lead">{d["articles"][0]["excerpt"]}</p></section>'+journal(lang,cur,True)+cta(lang,cur)
  elif key=='contact': body=contact(lang,cur)
  elif key=='credits':body=credits(lang,cur)
  else:body=article(lang,int(key.split('-')[1]),cur)
  editor_label={'pt':'Área de edição','en':'Blog editor','ru':'Редактор блога'}[lang]
- editor_link=f'<a href="https://idea-studio-editor.ivanromanenko.chatgpt.site/admin/">{editor_label}</a>' if key=='blog' else ''
+ editor_link=f'<a href="{rel(cur,'admin/index.html').removesuffix('index.html')}">{editor_label}</a>' if key=='blog' else ''
  footer=f'''<footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="footer-wordmark" href="{link(lang,'home',cur)}" aria-label="{esc(LAUNCH_COPY[lang]['home'])}"><img class="studio-logo" src="{asset(cur,'idea-studio-logo.png')}" alt="IDea Studio — Agência Criativa" lang="pt-PT" width="600" height="157"></a><p>{d['footerLine']}<br>Lisboa, Portugal</p></div><div class="footer-links">{''.join(f'<a href="{link(lang,k,cur)}">{s["name"]}</a>' for k,s in d['services'].items())}<a href="{link(lang,'blog',cur)}">{d['nav'][3]}</a></div><div class="footer-bottom"><span>© 2026 IDea Studio</span><a href="tel:+{PHONE}">+351 967 901 942</a><a href="{link(lang,'credits',cur)}">{d['credits']}</a>{editor_link}<a href="#main" aria-label="Top">↑</a></div></div></footer>'''
  locale={k:d[k] for k in ['message','name','business','service','brief','menu','close','planLabel']}
  locale['serviceNames']={k:v['name'] for k,v in d['services'].items()}
@@ -298,6 +301,7 @@ def render(lang,key):
  if key=='home':
   head=head.removesuffix('</head>')+"<style>.hero-services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 24px}.hero-service{display:grid;align-content:start;gap:5px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--dark)}.hero-service strong{font-size:17px}.hero-service span{font-size:13px;color:var(--muted)}.hero-service .hero-service-prices{color:var(--lime);font-weight:bold}.hero-service:hover{border-color:var(--lime)}@media(max-width:600px){.hero-services{grid-template-columns:1fr;gap:8px}.hero-service{grid-template-columns:1fr auto;align-items:center;padding:10px 12px}.hero-service strong{font-size:15px}.hero-service .hero-service-prices{grid-column:2;grid-row:1 / span 2;max-width:100px;text-align:right}}</style>"+'</head>'
  result=head+header+'<main id="main">'+body+'</main>'+footer+'<script id="locale" type="application/json">'+json.dumps(locale,ensure_ascii=False)+'</script>'+f'<script defer src="{asset(cur,"app.js")}?v={JS_REV}"></script></body></html>'
+ if key=='blog': result=result.replace('</body>',f'<script defer src="{rel(cur,"blog/feed.js")}"></script></body>')
  target=ROOT/cur;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(result)
  return canonical
 
