@@ -11,7 +11,7 @@
 <body>
 <header><strong>IDea Studio / Блог</strong><a href="../ru/blog/" style="color:inherit">Вернуться в блог</a></header>
 <section class="panel" id="login" style="max-width:420px;margin:24px auto"><h1>Вход в редактор</h1><form id="loginForm"><label>Логин<input id="loginName" autocomplete="username" required></label><label>Пароль<input id="loginPassword" type="password" autocomplete="current-password" required></label><button class="primary">Войти</button><p id="loginStatus" role="status"></p></form></section><main id="adminPanel" hidden>
-<aside class="panel"><h2>Черновики</h2><button type="button" id="new">+ Новая статья</button><div id="drafts"></div></aside>
+<aside class="panel"><h2>Локальные черновики</h2><p class="note">Публикации и удалённые статьи — в разделе «Статьи на сервере» ниже.</p><button type="button" id="new">+ Новая статья</button><div id="drafts"></div></aside>
 <section class="panel">
 <h1>Редактор статьи</h1>
 <form id="editor">
@@ -33,6 +33,7 @@ let current=empty();
 let dirty=false;
 let busy=false;
 let saved=[];
+let removedPosts=new Set();
 const database=new Promise((resolve,reject)=>{
   const request=indexedDB.open('idea-studio-editor',1);
   request.onupgradeneeded=()=>request.result.createObjectStore('drafts',{keyPath:'id'});
@@ -91,7 +92,9 @@ function list(){
   el('drafts').replaceChildren(...saved.map(draft=>{
     const button=document.createElement('button');
     button.type='button';
-    button.textContent=(draft.title||'Без заголовка')+' · '+draft.lang;
+    const lang=draft.managedLang??(draft.lang==='pt-PT'?'pt':draft.lang);
+    const removed=removedPosts.has(lang+'/'+draft.id);
+    button.textContent=(draft.title||'Без заголовка')+' · '+draft.lang+(removed?' · снята с публикации':'');
     button.setAttribute('aria-current',String(draft.id===current.id));
     button.onclick=()=>load(draft);
     return button;
@@ -223,6 +226,8 @@ async function refreshPosts(){
   refresh.disabled=true;
   try{
     const posts=await call('/manage');
+    removedPosts=new Set(posts.filter(post=>post.deleted).map(post=>post.lang+'/'+post.id));
+    list();
     el('managedPosts').replaceChildren(...posts.map(post=>{
       const row=document.createElement('div');
       row.className='managed-row';
@@ -250,6 +255,10 @@ async function refreshPosts(){
         toggle.disabled=true;
         try{
           await call(path+'&action='+(post.deleted?'restore':'delete'),{method:'POST'});
+          if(!post.deleted&&current.id===post.id&&(current.managedLang??(current.lang==='pt-PT'?'pt':current.lang))===post.lang){
+            el('postLink').hidden=true;
+            status('Статья снята с публикации. Открытая копия остаётся в редакторе.');
+          }
           await refreshPosts();
           note.textContent=post.deleted?'Статья возвращена в блог.':'Статья убрана из блога.';
         }catch(error){note.textContent=error.message;}
