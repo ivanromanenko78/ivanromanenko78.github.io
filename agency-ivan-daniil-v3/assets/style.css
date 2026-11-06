@@ -52,3 +52,22 @@
 
 .video-toggle[hidden],#copy-brief[hidden]{display:none}#copy-brief{margin-inline-start:8px}#brief-status:empty{display:none}.legal-section{margin-top:34px;scroll-margin-top:120px}
 .film-top,.film-bottom{pointer-events:none}.film-bottom .video-toggle{pointer-events:auto}.media-frame:has(video[controls]) .film-bottom{bottom:54px}
+
+/* Keep navigation and contact details readable across layouts. */
+.desktop-nav{font-size:16px;gap:clamp(16px,1.6vw,26px);white-space:nowrap}
+.header-actions>.text-link,.header-contact{font-size:15px}
+.languages,.mobile-language-bar .languages a{font-size:14px}
+.language-label,.mobile-language-bar .language-label{font-size:13px}
+#menu-toggle{font-size:16px;min-height:44px}
+.footer-top p,.footer-links{font-size:16px}
+.footer-bottom{font-size:14px;line-height:1.5;flex-wrap:wrap}
+@media(max-width:1280px){
+ .desktop-nav,.header-contact{display:none}
+ #menu-toggle{display:block}
+}
+@media(max-width:640px){
+ .mobile-language-bar{flex-wrap:wrap;row-gap:6px}
+ .mobile-language-bar .languages a{padding-inline:9px}
+ .footer-links{gap:12px 20px}
+ .footer-bottom{justify-content:flex-start;gap:12px 20px}
+}
