@@ -6,7 +6,7 @@
 <title>IDea Studio — редактор блога</title>
 <style>
 :root{color-scheme:dark;--bg:#111411;--surface:#1b211a;--line:#394434;--text:#f2f3eb;--muted:#b2bcad;--accent:#c6f16a}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,sans-serif}header,main{width:min(1120px,calc(100% - 28px));margin:auto}header{padding:22px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}header strong{font-size:21px}small,.note{color:var(--muted)}[hidden]{display:none!important}main{display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px;margin-top:20px;margin-bottom:24px}.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}h1,h2{margin:0 0 10px}button,input,textarea,select{font:inherit;color:inherit}button,input,textarea,select{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:8px 12px}button{cursor:pointer}button:disabled{opacity:.5;cursor:default}.primary{background:var(--accent);color:#111411;font-weight:700}label{display:block;margin:12px 0}label input,label textarea,label select{display:block;width:100%;margin-top:4px}textarea{resize:vertical;min-height:250px}.row,.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}#drafts button{display:block;width:100%;text-align:left;margin-top:6px;overflow-wrap:anywhere}#drafts button[aria-current=true]{border-color:var(--accent)}#photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}#photos img{width:100%;height:95px;object-fit:cover;border-radius:8px}#photos figure{margin:0}#photos button{font-size:13px}dialog{width:min(780px,calc(100% - 24px));max-height:90vh;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}dialog::backdrop{background:#000a}dialog img{max-width:100%;display:block;margin:12px auto;border-radius:8px}article{overflow-wrap:anywhere}#status{min-height:1.5em;margin:10px 0 0}.note{font-size:14px}:focus-visible{outline:2px solid var(--accent);outline-offset:3px}@media(max-width:650px){main{grid-template-columns:1fr}}
-</style>
+.post-manager{grid-column:1/-1}.managed-row{border-top:1px solid var(--line);padding:12px 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}.managed-row strong{overflow-wrap:anywhere}</style>
 </head>
 <body>
 <header><strong>IDea Studio / Блог</strong><a href="../ru/blog/" style="color:inherit">Вернуться в блог</a></header>
@@ -24,7 +24,7 @@
 <div id="photos"></div>
 <div class="actions"><button class="primary" id="save" type="submit">Сохранить черновик</button><button id="preview" type="button">Предпросмотр</button><button id="publish" type="button" class="primary">Опубликовать</button><button id="export" type="button">Скачать статью</button></div>
 <p id="status" role="status"></p><a id="postLink" hidden style="color:var(--accent)">Открыть опубликованную статью ↗</a>
-</form></section></main>
+</form></section><section class="panel post-manager"><h2>Статьи на сервере</h2><button id="refreshPosts" type="button">Обновить список</button><p id="manageStatus" role="status"></p><div id="managedPosts"></div></section></main>
 <dialog id="previewDialog"><form method="dialog"><button>Закрыть</button></form><article id="previewArticle"></article></dialog>
 <script>
 const el=id=>document.getElementById(id);
@@ -57,6 +57,8 @@ function load(draft){
   for(const id of ['title','body','lang'])el(id).value=current[id];
   el('files').value='';
   syncLang();
+  el('lang').disabled=!!current.managedLang;
+  el('publish').textContent=current.managedLang?'Сохранить и опубликовать':'Опубликовать';
   dirty=false;
   photos();
   list();
@@ -139,7 +141,7 @@ el('editor').onsubmit=async event=>{
     list();
     status('Черновик сохранён.');
   }catch{status('Сохранение недоступно. Можно скачать статью.');}
-  finally{fields.forEach(field=>field.disabled=false);busy=false;}
+  finally{fields.forEach(field=>field.disabled=false);el('lang').disabled=!!current.managedLang;busy=false;}
 };
 function article(draft){
   const node=document.createElement('article');
@@ -180,6 +182,7 @@ el('loginForm').onsubmit=async event=>{
     el('loginPassword').value='';
     el('login').hidden=true;
     el('adminPanel').hidden=false;
+    refreshPosts();
   }catch(error){
     authorization='';
     el('loginStatus').textContent=error.message;
@@ -189,7 +192,7 @@ el('publish').onclick=async()=>{
   if(busy)return;
   const draft=snapshot();
   if(!draft.title||!draft.body){status('Добавь заголовок и текст.');return;}
-  const lang=draft.lang==='pt-PT'?'pt':draft.lang;
+  const lang=draft.managedLang??(draft.lang==='pt-PT'?'pt':draft.lang);
   const article={id:draft.id,lang,title:draft.title,body:draft.body,cover:draft.photos[0]?.src??''};
   const fields=['title','body','lang','files','save','publish'].map(el);
   busy=true;
@@ -200,6 +203,10 @@ el('publish').onclick=async()=>{
     link.href='../blog/post.html?'+new URLSearchParams({lang,id:draft.id});
     link.hidden=false;
     status('Статья опубликована.');
+    draft.managedLang=lang;
+    current=draft;
+    el('publish').textContent='Сохранить и опубликовать';
+    refreshPosts();
     try{
       await query('readwrite',store=>store.put(draft));
       current=draft;
@@ -208,8 +215,55 @@ el('publish').onclick=async()=>{
       list();
     }catch{status('Статья опубликована. Локальный черновик сохранить не удалось.');}
   }catch(error){status(error.message);}
-  finally{busy=false;fields.forEach(field=>field.disabled=false);}
+  finally{busy=false;fields.forEach(field=>field.disabled=false);el('lang').disabled=!!current.managedLang;}
 };
+async function refreshPosts(){
+  const note=el('manageStatus'), refresh=el('refreshPosts');
+  if(refresh.disabled)return;
+  refresh.disabled=true;
+  try{
+    const posts=await call('/manage');
+    el('managedPosts').replaceChildren(...posts.map(post=>{
+      const row=document.createElement('div');
+      row.className='managed-row';
+      const title=document.createElement('strong');
+      title.textContent=post.title+' · '+post.lang.toUpperCase()+(post.deleted?' · удалена':' · опубликована');
+      const actions=document.createElement('div');
+      actions.className='actions';
+      const edit=document.createElement('button'), toggle=document.createElement('button');
+      edit.type=toggle.type='button';
+      edit.textContent='Редактировать';
+      toggle.textContent=post.deleted?'Вернуть':'Удалить';
+      const path='/manage?'+new URLSearchParams({lang:post.lang,id:post.id});
+      edit.onclick=async()=>{
+        if(busy||edit.disabled)return;
+        edit.disabled=true;
+        try{
+          const item=await call(path);
+          load({id:item.id,lang:item.lang==='pt'?'pt-PT':item.lang,managedLang:item.lang,title:item.title,body:item.body,photos:item.cover?[{src:item.cover,name:'Обложка'}]:[]});
+          if(current.id===item.id)el('title').focus();
+        }catch(error){note.textContent=error.message;}
+        finally{edit.disabled=false;}
+      };
+      toggle.onclick=async()=>{
+        if(toggle.disabled||(!post.deleted&&!confirm('Убрать статью из публичного блога? Её можно будет вернуть.')))return;
+        toggle.disabled=true;
+        try{
+          await call(path+'&action='+(post.deleted?'restore':'delete'),{method:'POST'});
+          await refreshPosts();
+          note.textContent=post.deleted?'Статья возвращена в блог.':'Статья убрана из блога.';
+        }catch(error){note.textContent=error.message;}
+        finally{toggle.disabled=false;}
+      };
+      actions.append(edit,toggle);
+      row.append(title,actions);
+      return row;
+    }));
+    note.textContent=posts.length?'':'Статей пока нет.';
+  }catch(error){note.textContent=error.message;}
+  finally{refresh.disabled=false;}
+}
+el('refreshPosts').onclick=refreshPosts;
 el('preview').onclick=()=>{
   el('previewArticle').replaceChildren(article(snapshot()));
   el('previewDialog').showModal();
